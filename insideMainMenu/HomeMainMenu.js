@@ -30,15 +30,15 @@ const HomeMainMenu = ({ navigation }) => {
     return (
 
         <PaperProvider theme={theme}>
-            
-                <View style={styles.View}>
 
-                    <Text style={styles.textBtn}
-                        onPress={() => console.log('home main menu screen')}
-                    >หน้า HomeMainMenu
-                    </Text>
+            <View style={styles.View}>
+                
+                <Text style={styles.textBtn}
+                    onPress={() => console.log('home main menu screen')}
+                >หน้า HomeMainMenu
+                </Text>
 
-                </View>
+            </View>
 
 
         </PaperProvider>
@@ -51,6 +51,7 @@ const styles = StyleSheet.create({
         padding: 16,
         justifyContent: 'center',
         alignItems: 'center',
+        backgroundColor: '#fff',
     },
     LoginButton: {
         borderRadius: 15,
@@ -58,7 +59,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#88AED0',
         margin: 4,
         width: 300,
-    }, 
+    },
     LoginButtonLabel: {
         fontFamily: 'Prompt-Bold',
         height: 50,
@@ -70,13 +71,6 @@ const styles = StyleSheet.create({
         color: '#88AED0', // Change the text color here
         height: 50
 
-    },
-    InputForm: {
-        fontFamily: 'Prompt-Regular',
-        backgroundColor: '#f2f2f2',
-        borderRadius: 15,
-        margin: 4,
-        width: 300,
     },
     image: {
         margin: 4,

@@ -19,27 +19,33 @@ import {
 // import { assets } from './react-native.config';
 import bgImg from '../assets/bg.png'
 
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, CommonActions } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-
-
-
-
+// Screens
 import HomeMainMenuScreen from '../insideMainMenu/HomeMainMenu'
 import MapScreen from '../insideMainMenu/Map'
 import RecentScreen from '../insideMainMenu/Recent'
 import OtherScreen from '../insideMainMenu/Other'
+import Other from '../insideMainMenu/Other';
 
 
-
+//Screen names
+const homeName = "Home";
+const mapName = "Map";
+const recentName = "Recent";
+const otherName = "Other";
 
 
 const Tab = createBottomTabNavigator();
+
+
 
 const MainMenu = ({ navigation }) => {
     const logo_text = require('../assets/logo_text.png');
@@ -48,68 +54,51 @@ const MainMenu = ({ navigation }) => {
 
 
     return (
-
         <View style={styles.container}>
 
             <StatusBar style="auto" />
 
+
             <Tab.Navigator
-            shifting={true}>
+                initialRouteName={homeName}
+                screenOptions={({ route }) => ({
+                    tabBarIcon: ({ focused, color, size }) => {
+                        let iconName;
+                        let rn = route.name;
 
-                <Tab.Screen
-                    
-                    name="Home"
-                    component={HomeMainMenuScreen}
-                    options={{
-                        tabBarIcon: ({ color, size }) => (
-                            <Ionicons name="home" size={size} color={color} />
-                        ),
-                        headerShown : false,
-                        
-                    }}
+                        if (rn === homeName) {
+                            iconName = focused ? 'home' : 'home-outline';
+
+                        } else if (rn === mapName) {
+                            iconName = focused ? 'location' : 'location-outline';
+
+                        } else if (rn === recentName) {
+                            iconName = focused ? 'refresh' : 'refresh-outline';
+                        } else if (rn === otherName) {
+                            iconName = focused ? 'menu' : 'menu-outline';
+                        }
+
+                        // You can return any component that you like here!
+                        return <Ionicons name={iconName} size={size} color={color} />;
+                    },
+                    tabBarActiveTintColor: '#88AED0',
+                    tabBarInactiveTintColor: 'grey',
+                    tabBarLabelStyle: { paddingBottom: 0, fontSize: 0 },
+                    tabBarStyle: { padding: 0, height: 60, backgroundColor: '#f2f2f2' }
+
+                })}
                 >
-                </Tab.Screen>
 
-
-
-                <Tab.Screen
-                    name="Map"
-                    component={MapScreen}
-                    options={{
-                        tabBarIcon: ({ color, size }) => (
-                            <Ionicons name="map" size={size} color={color} />
-                        ),
-                    }}
-                >
-                </Tab.Screen>
-
-
-
-                <Tab.Screen
-                    name="Recent"
-                    component={RecentScreen}
-                    options={{
-                        tabBarIcon: ({ color, size }) => (
-                            <Ionicons name="refresh" size={size} color={color} />
-                        )
-                    }}
-                >
-                </Tab.Screen>
-
-
-
-                <Tab.Screen
-                    name="Other"
-                    component={OtherScreen}
-                    options={{
-                        tabBarIcon: ({ color, size }) => (
-                            <Ionicons name="menu" size={size} color={color} />
-                        )
-                    }}
-                >
-                </Tab.Screen>
+                <Tab.Screen name={homeName} component={HomeMainMenuScreen} 
+                options={
+                    { headerShown: false }
+                }/>
+                <Tab.Screen name={mapName} component={MapScreen} />
+                <Tab.Screen name={recentName} component={RecentScreen} />
+                <Tab.Screen name={otherName} component={OtherScreen} />
 
             </Tab.Navigator>
+
 
 
 
