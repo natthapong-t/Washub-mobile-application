@@ -7,6 +7,9 @@ import LoginScreen from './screens/Login'
 import RegisterScreen from './screens/Register'
 import HomeScreen from './screens/Home'
 import MainMenuScreen from './screens/MainMenu'
+import OTPScreen from './screens/OTP'
+
+
 
 import { useFonts } from 'expo-font';
 
@@ -108,6 +111,27 @@ const MyStack = () => {
 
           }}
         />
+        <Stack.Screen
+          name="OTP"
+          component={OTPScreen}
+          options={{
+            headerShown: true,
+            title: '',
+            headerStyle: {
+              backgroundColor: '#C3E3FE'
+            },
+            headerTintColor: '#fff',
+            headerTitleAlign: 'center',
+            headerTitleStyle: {
+
+            }
+
+          }}
+        />
+
+
+
+
       </Stack.Navigator>
     </NavigationContainer>
   );

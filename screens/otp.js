@@ -24,7 +24,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 
 
-const Login = ({ navigation }) => {
+const OTPScreen = ({ navigation }) => {
     const logo_text = require('../assets/logo_text.png');
     const [text, setText] = React.useState("");
     return (
@@ -33,13 +33,18 @@ const Login = ({ navigation }) => {
             <ImageBackground ImageBackground source={bgImg} style={styles.View}>
                 <View style={styles.View}>
 
+                    <Image
+                        style={{ width: 200, height: 60, marginVertical: 8 }}
+                        source={logo_text}
+                    />
+
                     <TextInput
-                        left={<TextInput.Icon icon="phone" disabled/>}
+                        left={<TextInput.Icon icon="email-receive-outline" disabled />}
                         keyboardType="number-pad"
                         placeholderTextColor='#A4A6A8'
                         mode={'flat'}
                         placeholder='ใส่ OTP ที่ได้รับ'
-                        placeholderStyle = {styles.InputForm}
+                        placeholderStyle={styles.InputForm}
                         style={styles.InputForm}
                         labelStyle={styles.inputLabel}
                         onChangeText={text => setText('')}
@@ -58,7 +63,7 @@ const Login = ({ navigation }) => {
                         mode="elevated"
                         style={styles.LoginButton}
                         labelStyle={styles.LoginButtonLabel}
-                        onPress={() => console.log('OTP Confirmation Pressed')}
+                        onPress={() => navigation.navigate('MainMenu')}
                     >
                         เข้าสู่ระบบ
                     </Button>
@@ -91,7 +96,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#88AED0',
         margin: 4,
         width: 300,
-    }, 
+    },
     LoginButtonLabel: {
         fontFamily: 'Prompt-Bold',
         height: 50,
@@ -170,4 +175,4 @@ const theme = {
 };
 
 
-export default Login;
+export default OTPScreen;

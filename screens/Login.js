@@ -67,7 +67,7 @@ const Login = ({ navigation }) => {
                         mode="elevated"
                         style={styles.LoginButton}
                         labelStyle={styles.LoginButtonLabel}
-                        onPress={() => navigation.navigate('MainMenu')}
+                        onPress={() => navigation.navigate('OTP')}
                     >
                         เข้าสู่ระบบ
                     </Button>
