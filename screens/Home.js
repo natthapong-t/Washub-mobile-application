@@ -19,8 +19,8 @@ import {
 
 import bgImg from '../assets/bg.png'
 
-import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 const fontConfig = {
   customVariant: {
@@ -39,15 +39,15 @@ const fontConfig = {
 
 
 
-const MyComponent = ({navigation}) => {
+const MyComponent = ({ navigation }) => {
 
   const WashubMascot = require('../assets/mascot.png');
   const logo_text = require('../assets/logo_text.png');
   const [text, setText] = React.useState("");
   return (
-    
+
     <PaperProvider theme={theme}>
-    <StatusBar backgroundColor="#C3E3FE" />
+      <StatusBar backgroundColor="#C3E3FE" />
       <ImageBackground ImageBackground source={bgImg} style={styles.View}>
         <View style={styles.View}>
 
@@ -94,7 +94,7 @@ const MyComponent = ({navigation}) => {
 const theme = {
 
   ...DefaultTheme,
-  fonts: configureFonts({config: fontConfig, isV3: true}),
+  fonts: configureFonts({ config: fontConfig, isV3: true }),
   "colors": {
     "primary": "rgb(0, 100, 150)",
     "onPrimary": "rgb(255, 255, 255)",
@@ -181,19 +181,19 @@ const styles = StyleSheet.create({
     width: 300,
   },
   RegisterButtonLabel: {
-    fontFamily: 'Prompt-Bold', //Prompt-Regular Prompt-Bold
     height: 50,
     verticalAlign: 'middle',
-    color: '#88AED0', 
+    color: '#88AED0',
+    fontFamily: 'Prompt-Bold', //Prompt-Regular Prompt-Bold
   },
   LoginButtonLabel: {
-    fontFamily: 'Prompt-Bold', //Prompt-Regular Prompt-Bold
     height: 50,
     verticalAlign: 'middle',
-    color: '#fff', 
+    color: '#fff',
+    fontFamily: 'Prompt-Bold', //Prompt-Regular Prompt-Bold
   },
   inputLabel: {
-    color: '#88AED0', 
+    color: '#88AED0',
     height: 50
   },
   InputForm: {

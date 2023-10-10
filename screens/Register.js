@@ -202,8 +202,10 @@ const styles = StyleSheet.create({
         fontFamily: '',
         backgroundColor: '#f2f2f2',
         borderRadius: 15,
-        margin: 4,
+        marginVertical: 5,
         width: 300,
+        elevation: 3,
+        shadowColor: '#757575'
     },
     image: {
         margin: 4,

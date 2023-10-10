@@ -7,13 +7,14 @@ import LoginScreen from './screens/Login'
 import RegisterScreen from './screens/Register'
 import HomeScreen from './screens/Home'
 import MainMenuScreen from './screens/MainMenu'
-import OTPScreen from './screens/OTP'
+import OTPScreen from './screens/otp'
 
 
 
 import { useFonts } from 'expo-font';
 
 import { getAuth, RecaptchaVerifier } from "firebase/auth";
+
 
 import 'firebase/auth';
 import 'firebase/database';
@@ -112,7 +113,7 @@ const MyStack = () => {
           }}
         />
         <Stack.Screen
-          name="OTP"
+          name="otp"
           component={OTPScreen}
           options={{
             headerShown: true,

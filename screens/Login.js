@@ -1,10 +1,11 @@
 import * as React from 'react';
+import { useState, useRef } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import FontAwesome, { SolidIcons, RegularIcons, BrandIcons } from 'react-native-fontawesome';
 
 import {
-    StyleSheet, Text, View,
-    TouchableOpacity, SafeAreaView,
+    StyleSheet, Text, View, Platform,
+    TouchableOpacity, SafeAreaView, Alert,
     Image, AppRegistry, ImageBackground, Pressable
 } from 'react-native';
 
@@ -19,14 +20,56 @@ import {
 // import { assets } from './react-native.config';
 import bgImg from '../assets/bg.png'
 
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+import { get, ref, query, orderByChild, equalTo, getDatabase } from 'firebase/database';
+
+import { FirebaseRecaptchaVerifierModal, FirebaseRecaptchaBanner } from 'expo-firebase-recaptcha';
+import { initializeApp, getApp } from 'firebase/app';
+
+import { getAuth, PhoneAuthProvider, signInWithCredential, signInWithPhoneNumber } from 'firebase/auth';
+
+import auth from '@react-native-firebase/auth';
+
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+
 
 
 
 const Login = ({ navigation }) => {
     const logo_text = require('../assets/logo_text.png');
-    const [text, setText] = React.useState("");
+    const [phoneNumber, setPhoneNumber] = useState('');
+
+
+    const handleLogin = async () => {
+        // Check if the phone number exists in the 'users' database
+        const phoneNumberExists = await checkPhoneNumberExists(phoneNumber);
+
+        if (phoneNumberExists) {
+            // Navigate to OTP screen
+            navigation.navigate('otp')
+        } else {
+            Alert.alert('กรุณาสมัครสมาชิก', 'หมายเลขดังกล่าวไม่มีอยู่ในระบบ กรุณาสมัครสมาชิก.');
+        }
+    };
+
+    const checkPhoneNumberExists = async (phoneNumber) => {
+        const db = getDatabase();
+        const usersRef = ref(db, 'users');
+
+        try {
+            const phoneNumberQuery = query(usersRef, orderByChild('phoneNumber'), equalTo(phoneNumber));
+            const snapshot = await get(phoneNumberQuery);
+
+            // Check if the snapshot has any data (i.e., phone number exists in the database)
+            return snapshot.exists();
+        } catch (error) {
+            console.error('Error checking phone number:', error);
+            return false; // Assume phone number doesn't exist on error
+        }
+    };
+
+
     return (
 
         <PaperProvider theme={theme}>
@@ -34,23 +77,28 @@ const Login = ({ navigation }) => {
                 <View style={styles.View}>
 
 
+
+
                     <Image
                         style={{ width: 200, height: 60, marginVertical: 8 }}
                         source={logo_text}
                     />
 
-                    
+
 
                     <TextInput
-                        left={<TextInput.Icon icon="phone" disabled/>}
-                        keyboardType="number-pad"
+                        left={<TextInput.Icon icon="phone" disabled />}
+                        keyboardType="phone-pad"
+                        autoFocus
+                        autoCompleteType="tel"
                         placeholderTextColor='#A4A6A8'
                         mode={'flat'}
                         placeholder='เบอร์โทรศัพท์'
-                        placeholderStyle = {styles.InputForm}
+                        placeholderStyle={styles.InputForm}
                         style={styles.InputForm}
                         labelStyle={styles.inputLabel}
-                        onChangeText={text => setText('')}
+                        value={phoneNumber}
+                        onChangeText={(text) => setPhoneNumber(text)}
                         selectionColor='#88AED0'
                         cursorColor='#88AED0'
                         underlineColor='rgba(255, 255, 255, 0)'
@@ -67,7 +115,7 @@ const Login = ({ navigation }) => {
                         mode="elevated"
                         style={styles.LoginButton}
                         labelStyle={styles.LoginButtonLabel}
-                        onPress={() => navigation.navigate('OTP')}
+                        onPress={handleLogin}
                     >
                         เข้าสู่ระบบ
                     </Button>
@@ -77,15 +125,15 @@ const Login = ({ navigation }) => {
                     </Text>
 
 
-
-
-
                 </View>
             </ImageBackground>
 
         </PaperProvider>
     )
 }
+
+
+
 
 const styles = StyleSheet.create({
     View: {
@@ -100,7 +148,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#88AED0',
         margin: 4,
         width: 300,
-    }, 
+    },
     LoginButtonLabel: {
         fontFamily: 'Prompt-Bold',
         height: 50,
@@ -114,6 +162,8 @@ const styles = StyleSheet.create({
 
     },
     InputForm: {
+        elevation: 3,
+        shadowColor: '#757575',
         fontFamily: 'Prompt-Regular',
         backgroundColor: '#f2f2f2',
         borderRadius: 15,

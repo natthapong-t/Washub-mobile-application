@@ -24,6 +24,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 
 
+
+
+
 const OTPScreen = ({ navigation }) => {
     const logo_text = require('../assets/logo_text.png');
     const [text, setText] = React.useState("");
@@ -47,7 +50,6 @@ const OTPScreen = ({ navigation }) => {
                         placeholderStyle={styles.InputForm}
                         style={styles.InputForm}
                         labelStyle={styles.inputLabel}
-                        onChangeText={text => setText('')}
                         selectionColor='#88AED0'
                         cursorColor='#88AED0'
                         underlineColor='rgba(255, 255, 255, 0)'
@@ -63,7 +65,9 @@ const OTPScreen = ({ navigation }) => {
                         mode="elevated"
                         style={styles.LoginButton}
                         labelStyle={styles.LoginButtonLabel}
-                        onPress={() => navigation.navigate('MainMenu')}
+                        onPress={() => navigation.navigate('MainMenu')
+
+                        }
                     >
                         เข้าสู่ระบบ
                     </Button>
@@ -79,7 +83,7 @@ const OTPScreen = ({ navigation }) => {
                 </View>
             </ImageBackground>
 
-        </PaperProvider>
+        </PaperProvider >
     )
 }
 
@@ -110,6 +114,8 @@ const styles = StyleSheet.create({
 
     },
     InputForm: {
+        elevation: 3,
+        shadowColor: '#757575',
         fontFamily: 'Prompt-Regular',
         backgroundColor: '#f2f2f2',
         borderRadius: 15,

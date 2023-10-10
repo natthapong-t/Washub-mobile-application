@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import FontAwesome, { SolidIcons, RegularIcons, BrandIcons } from 'react-native-fontawesome';
-
+import Constants from 'expo-constants';
 import {
     StyleSheet, Text, View,
-    TouchableOpacity, SafeAreaView,
-    Image, AppRegistry, ImageBackground, Pressable
+    TouchableOpacity, SafeAreaView, Dimensions,
+    Image, AppRegistry, ImageBackground, Pressable, ScrollView
 } from 'react-native';
 
 import {
@@ -22,7 +22,11 @@ import bgImg from '../assets/bg.png'
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+import BranchList from './data/BranchList';
 
+import { Icon } from '@rneui/themed';
+
+const screen = Dimensions.get('screen');
 
 const HomeMainMenu = ({ navigation }) => {
     const logo_text = require('../assets/logo_text.png');
@@ -31,12 +35,113 @@ const HomeMainMenu = ({ navigation }) => {
 
         <PaperProvider theme={theme}>
 
-            <View style={styles.View}>
-                
-                <Text style={styles.textBtn}
-                    onPress={() => console.log('home main menu screen')}
-                >หน้า HomeMainMenu
-                </Text>
+            <View style={styles.container}>
+                <View style={styles.banner}>
+                </View>
+
+                <View style={styles.containerRow2}>
+                    <TouchableOpacity style={styles.AddressButton} onPress={() => console.log('address')} activeOpacity={0.85}>
+                        <Icon
+                            name='location-sharp'
+                            color='#78A2CC'
+                            type='ionicon'
+                            size={30}
+                        />
+
+                        <Text style={{
+                            fontFamily: 'Prompt-Regular',
+                            color: '#757575',
+                            fontSize: 14,
+                        }}>
+                            123 มหาวิทยาลัย..
+                        </Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={styles.FavButton} onPress={() => console.log('favorite')} activeOpacity={0.85}>
+                        <Icon
+                            name='heart'
+                            color='#FF5656'
+                            type='ionicon'
+                            size={35}
+                        />
+                    </TouchableOpacity>
+
+                </View>
+
+                <View style={styles.containerRow}>
+                    <TouchableOpacity style={styles.button} onPress={() => console.log('wash now')} activeOpacity={0.85}>
+                        <Text
+                            style={styles.text}
+                        >
+                            ซักผ้าเลย
+                        </Text>
+                        <Image
+                            style={styles.tinyLogo}
+                            source={require('../assets/laundry-basket.png')}
+                        />
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={styles.button} onPress={() => console.log('recent')} activeOpacity={0.85}>
+                        <Text style={styles.text}>คำสั่งซื้อ</Text>
+                        <Image
+                            style={styles.tinyLogo}
+                            source={require('../assets/laundry-bike.png')}
+                        />
+                    </TouchableOpacity>
+                </View>
+
+                <View
+                    style={[styles.card, styles.elevation]}>
+                    <TextInput
+                        left={<TextInput.Icon icon="magnify" />}
+                        right={<TextInput.Icon icon="filter-variant" />}
+                        placeholderTextColor='#A4A6A8'
+                        mode={'flat'}
+                        placeholder='ค้นหาชื่อร้านได้เลย'
+                        placeholderStyle={styles.InputForm}
+                        style={styles.InputForm}
+                        labelStyle={styles.inputLabel}
+                        onChangeText={text => setText('')}
+                        selectionColor='#88AED0'
+                        cursorColor='#88AED0'
+                        underlineColor='rgba(255, 255, 255, 0)'
+                        activeUnderlineColor='rgba(255, 255, 255, 0)'
+                        outlineColor='#88AED0'
+                        activeOutlineColor='#88AED0'
+                        textColor='#1b1b1b'
+                        height='90'
+                    />
+
+                </View>
+
+                <ScrollView style={styles.scrollStyle} overScrollMode="never" showsVerticalScrollIndicator={false} >
+                    <BranchList
+                        img={require('.././assets/branch-logo.png')}
+                        title="ร้านซักผ้า 1"
+                    />
+
+                    <BranchList
+                        img={require('.././assets/branch-logo.png')}
+                        title="ร้านซักผ้า 2"
+                    />
+
+                    <BranchList
+                        img={require('.././assets/branch-logo.png')}
+                        title="ร้านซักผ้า 3"
+                    />
+
+                    <BranchList
+                        img={require('.././assets/branch-logo.png')}
+                        title="ร้านซักผ้า 4"
+                    />
+
+                    <BranchList
+                        img={require('.././assets/branch-logo.png')}
+                        title="ร้านซักผ้า 5"
+                    />
+                </ScrollView>
+
+
 
             </View>
 
@@ -46,39 +151,113 @@ const HomeMainMenu = ({ navigation }) => {
 }
 
 const styles = StyleSheet.create({
-    View: {
+    container: {
         flex: 1,
-        padding: 16,
+        paddingTop: Constants.statusBarHeight,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+    },
+    containerRow: {
+        marginTop: 20,
+        marginBottom: 0,
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    containerRow2: {
+        width: "100%",
+        justifyContent: 'space-between',
+        paddingHorizontal: 5,
+        marginTop: 20,
+        marginBottom: 0,
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    banner: {
+        width: '100%',
+        height: 300,
+        borderBottomLeftRadius: 20,
+        borderBottomRightRadius: 20,
+        backgroundColor: '#C3E3FE',
+        position: 'absolute',
+        alignItems: 'center',
+    },
+    button: {
+        elevation: 5,
+        marginHorizontal: 5,
+        flexDirection: 'row',
+        borderRadius: 20,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#fff',
+        backgroundColor: '#F2F2F2',
+        width: 190,
+        height: 115,
     },
-    LoginButton: {
-        borderRadius: 15,
-        borderBottomWidth: 0,
-        backgroundColor: '#88AED0',
-        margin: 4,
-        width: 300,
+    tinyLogo: {
+        width: 60,
+        height: 60,
     },
-    LoginButtonLabel: {
-        fontFamily: 'Prompt-Bold',
-        height: 50,
-        verticalAlign: 'middle',
-        color: '#fff', // Change the text color here
+    text: {
+        fontFamily: 'Prompt-Regular',
+        color: '#1b1b1b',
+        marginRight: 10,
+        fontSize: 16,
     },
     inputLabel: {
         fontFamily: 'Prompt-Regular',
-        color: '#88AED0', // Change the text color here
+        color: '#88AED0',
         height: 50
 
     },
-    image: {
-        margin: 4,
-    },
-    textBtn: {
-        color: '#88AED0',
+    InputForm: {
         fontFamily: 'Prompt-Regular',
+        backgroundColor: '#f2f2f2',
+        borderRadius: 15,
+        width: 360,
     },
+    card: {
+        backgroundColor: "#f2f2f2",
+        paddingVertical: 10,
+        paddingHorizontal: 0,
+        marginHorizontal: 20,
+        borderRadius: 15,
+        marginTop: 20,
+        flexDirection: "row",
+        alignItems: "center",
+        width: 375,
+    },
+    elevation: {
+        elevation: 5,
+        shadowColor: '#1b1b1b',
+    },
+    scrollStyle: {
+        marginTop: 10,
+    },
+    FavButton: {
+        elevation: 5,
+        marginHorizontal: 5,
+        flexDirection: 'row',
+        borderRadius: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#F2F2F2',
+        width: 50,
+        height: 50,
+    },
+    AddressButton: {
+        paddingHorizontal: 5,
+        elevation: 5,
+        marginHorizontal: 5,
+        flexDirection: 'row',
+        borderRadius: 15,
+        alignItems: 'center',
+        backgroundColor: '#D8EDFF',
+        width: 150,
+        height: 50,
+    },
+
+
+
+
 });
 
 
