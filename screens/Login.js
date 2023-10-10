@@ -49,7 +49,7 @@ const Login = ({ navigation }) => {
             // Navigate to OTP screen
             navigation.navigate('otp')
         } else {
-            Alert.alert('กรุณาสมัครสมาชิก', 'หมายเลขดังกล่าวไม่มีอยู่ในระบบ กรุณาสมัครสมาชิก.');
+            Alert.alert('หมายเลขดังกล่าวยังไม่ถูกลงทะเบียน', 'ไม่พบบัญชีผู้ใช้ กรุณาสมัครสมาชิก.');
         }
     };
 
