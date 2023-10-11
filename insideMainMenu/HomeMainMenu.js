@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import FontAwesome, { SolidIcons, RegularIcons, BrandIcons } from 'react-native-fontawesome';
 import Constants from 'expo-constants';
@@ -35,14 +36,51 @@ import { initializeApp, getApp } from 'firebase/app';
 
 const screen = Dimensions.get('screen');
 
-const HomeMainMenu = ({ navigation, route }) => {
+
+
+
+const HomeMainMenu = ({ navigation, route, phoneNumber }) => {
     const logo_text = require('../assets/logo_text.png');
     const [text, setText] = React.useState("");
+    const [userData, setUserData] = useState(null);
+
+    const fetchUserDataByPhoneNumber = async (phoneNumber) => {
+        const db = getDatabase();
+        const usersRef = ref(db, 'users');
+
+        try {
+            const usersSnapshot = await get(usersRef);
+            if (usersSnapshot.exists()) {
+                const users = usersSnapshot.val();
+                const userKey = Object.keys(users).find(key => users[key].phoneNumber === phoneNumber);
+
+                if (userKey) {
+                    const userData = users[userKey];
+                    return userData;
+                } else {
+                    throw new Error('User not found');
+                }
+            } else {
+                throw new Error('No users found');
+            }
+        } catch (error) {
+            throw new Error('Error fetching user data: ' + error.message);
+        }
+    };
 
 
-    //const auth = route.params.auth;
+    React.useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const userData = await fetchUserDataByPhoneNumber(phoneNumber);
+                setUserData(userData);
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+            }
+        };
 
-
+        fetchData();
+    }, [phoneNumber]);
 
     return (
 
@@ -66,7 +104,13 @@ const HomeMainMenu = ({ navigation, route }) => {
                             color: '#757575',
                             fontSize: 14,
                         }}>
-                            ขอนแก่น
+                            
+                            {userData ? (
+                                <Text> {userData.address}</Text>
+                            ) : (
+                                <Text>Loading...</Text>
+                            )}
+
                         </Text>
                     </TouchableOpacity>
 
@@ -257,14 +301,14 @@ const styles = StyleSheet.create({
         height: 50,
     },
     AddressButton: {
-        paddingHorizontal: 5,
+        paddingLeft: 5,
+        paddingRight: 10,
         elevation: 5,
         marginHorizontal: 5,
         flexDirection: 'row',
         borderRadius: 15,
         alignItems: 'center',
         backgroundColor: '#D8EDFF',
-        width: 150,
         height: 50,
     },
 

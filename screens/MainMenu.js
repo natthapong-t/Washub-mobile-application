@@ -58,6 +58,7 @@ const Tab = createBottomTabNavigator();
 const MainMenu = ({ navigation, route }) => {
     const logo_text = require('../assets/logo_text.png');
     const [text, setText] = React.useState("");
+    const phoneNumber = route.params.phoneNumber;
     //const auth = route.params.auth;
 
 
@@ -96,12 +97,13 @@ const MainMenu = ({ navigation, route }) => {
                     tabBarStyle: { padding: 0, height: 60, backgroundColor: '#f2f2f2' }
 
                 })}
-                >
+            >
 
-                <Tab.Screen name={homeName} component={HomeMainMenuScreen} 
-                options={
-                    { headerShown: false }
-                }/>
+                <Tab.Screen
+                    name={homeName}
+                    component={() => <HomeMainMenuScreen phoneNumber={phoneNumber} />}
+                    options={{ headerShown: false }}
+                />
                 <Tab.Screen name={mapName} component={MapScreen} />
                 <Tab.Screen name={recentName} component={RecentScreen} />
                 <Tab.Screen name={otherName} component={OtherScreen} />

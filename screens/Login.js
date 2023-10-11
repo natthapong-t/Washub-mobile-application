@@ -64,7 +64,7 @@ const Login = ({ navigation }) => {
                     recaptchaVerifier.current
                 );
                 setVerificationId(verificationId);
-                navigation.navigate('otp', { verificationId, auth });
+                navigation.navigate('otp', { verificationId, auth, phoneNumber });
             } catch (err) {
                 Alert.alert('Verification Error', `Error: ${err.message}`);
             }
