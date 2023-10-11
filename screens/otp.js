@@ -22,19 +22,35 @@ import bgImg from '../assets/bg.png'
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+import { getAuth, PhoneAuthProvider, signInWithCredential, onAuthStateChanged  } from "firebase/auth";
+import { FirebaseRecaptchaVerifierModal, FirebaseRecaptchaBanner } from 'expo-firebase-recaptcha';
+import { initializeApp, getApp } from 'firebase/app';
 
 
 
 
-
-const OTPScreen = ({ navigation }) => {
+const OTPScreen = ({ navigation, verificationId, auth }) => {
     const logo_text = require('../assets/logo_text.png');
     const [text, setText] = React.useState("");
+    const [verificationCode, setVerificationCode] = React.useState();
+    const [message, showMessage] = React.useState();
+    const attemptInvisibleVerification = true;
+    const [user, setUser] = React.useState(null);
+    
+
+    React.useEffect(() => {
+        var auth = getAuth();
+        auth.onAuthStateChanged(function (us) {
+            setUser(us);
+        });
+    }, []);
+
     return (
 
         <PaperProvider theme={theme}>
             <ImageBackground ImageBackground source={bgImg} style={styles.View}>
                 <View style={styles.View}>
+
 
                     <Image
                         style={{ width: 200, height: 60, marginVertical: 8 }}
@@ -58,6 +74,7 @@ const OTPScreen = ({ navigation }) => {
                         activeOutlineColor='#88AED0'
                         textColor='#1b1b1b'
                         height='90'
+                        onChangeText={setVerificationCode}
                     />
 
 
@@ -65,9 +82,19 @@ const OTPScreen = ({ navigation }) => {
                         mode="elevated"
                         style={styles.LoginButton}
                         labelStyle={styles.LoginButtonLabel}
-                        onPress={() => navigation.navigate('MainMenu')
-
-                        }
+                        onPress={async () => {
+                            try {
+                                const credential = PhoneAuthProvider.credential(
+                                    verificationId,
+                                    verificationCode
+                                );
+                                await signInWithCredential(auth, credential);
+                                showMessage({ text: 'Phone authentication successful 👍' });
+                                navigation.navigate('MainMenu', auth)
+                            } catch (err) {
+                                showMessage({ text: `Error: ${err.message}`, color: 'red' });
+                            }
+                        }}
                     >
                         เข้าสู่ระบบ
                     </Button>
@@ -76,6 +103,27 @@ const OTPScreen = ({ navigation }) => {
                     >ยังไม่ได้รับ OTP? คลิกที่นี่
                     </Text>
 
+                    {message ? (
+                        <TouchableOpacity
+                            style={[
+                                StyleSheet.absoluteFill,
+                                { backgroundColor: 0xffffffee, justifyContent: 'center' },
+                            ]}
+                            onPress={() => showMessage(undefined)}>
+                            <Text
+                                style={{
+                                    color: message.color || 'blue',
+                                    fontSize: 17,
+                                    textAlign: 'center',
+                                    margin: 20,
+                                }}>
+                                {message.text}
+                            </Text>
+                        </TouchableOpacity>
+                    ) : (
+                        undefined
+                    )}
+                    {attemptInvisibleVerification && <FirebaseRecaptchaBanner />}
 
 
 

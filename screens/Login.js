@@ -23,22 +23,33 @@ import bgImg from '../assets/bg.png'
 
 import { get, ref, query, orderByChild, equalTo, getDatabase } from 'firebase/database';
 
+import { getAuth, PhoneAuthProvider, signInWithCredential, onAuthStateChanged } from "firebase/auth";
 import { FirebaseRecaptchaVerifierModal, FirebaseRecaptchaBanner } from 'expo-firebase-recaptcha';
 import { initializeApp, getApp } from 'firebase/app';
 
-import { getAuth, PhoneAuthProvider, signInWithCredential, signInWithPhoneNumber } from 'firebase/auth';
 
-import auth from '@react-native-firebase/auth';
-
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/auth';
 
 
 
 
 const Login = ({ navigation }) => {
+
     const logo_text = require('../assets/logo_text.png');
-    const [phoneNumber, setPhoneNumber] = useState('');
+
+    const auth = getAuth();
+    const app = getApp();
+    const recaptchaVerifier = React.useRef(null);
+    const [phoneNumber, setPhoneNumber] = React.useState();
+    const [verificationId, setVerificationId] = React.useState();
+
+    const firebaseConfig = app ? app.options : undefined;
+    const [message, showMessage] = React.useState();
+    const attemptInvisibleVerification = true;
+
+    const [user, setUser] = React.useState(null);
+
+
+    
 
 
     const handleLogin = async () => {
@@ -46,11 +57,22 @@ const Login = ({ navigation }) => {
         const phoneNumberExists = await checkPhoneNumberExists(phoneNumber);
 
         if (phoneNumberExists) {
-            // Navigate to OTP screen
-            navigation.navigate('otp')
+            try {
+                const phoneProvider = new PhoneAuthProvider(auth);
+                const verificationId = await phoneProvider.verifyPhoneNumber(
+                    phoneNumber,
+                    recaptchaVerifier.current
+                );
+                setVerificationId(verificationId);
+                navigation.navigate('otp', { verificationId, auth });
+            } catch (err) {
+                Alert.alert('Verification Error', `Error: ${err.message}`);
+            }
         } else {
             Alert.alert('หมายเลขดังกล่าวยังไม่ถูกลงทะเบียน', 'ไม่พบบัญชีผู้ใช้ กรุณาสมัครสมาชิก.');
         }
+
+
     };
 
     const checkPhoneNumberExists = async (phoneNumber) => {
@@ -77,7 +99,11 @@ const Login = ({ navigation }) => {
                 <View style={styles.View}>
 
 
-
+                    <FirebaseRecaptchaVerifierModal
+                        ref={recaptchaVerifier}
+                        firebaseConfig={app.options}
+                    // attemptInvisibleVerification
+                    />
 
                     <Image
                         style={{ width: 200, height: 60, marginVertical: 8 }}
@@ -93,12 +119,12 @@ const Login = ({ navigation }) => {
                         autoCompleteType="tel"
                         placeholderTextColor='#A4A6A8'
                         mode={'flat'}
-                        placeholder='เบอร์โทรศัพท์'
+                        placeholder='(+66)เบอร์โทรศัพท์'
                         placeholderStyle={styles.InputForm}
                         style={styles.InputForm}
                         labelStyle={styles.inputLabel}
                         value={phoneNumber}
-                        onChangeText={(text) => setPhoneNumber(text)}
+                        onChangeText={phoneNumber => setPhoneNumber(phoneNumber)}
                         selectionColor='#88AED0'
                         cursorColor='#88AED0'
                         underlineColor='rgba(255, 255, 255, 0)'
@@ -112,10 +138,12 @@ const Login = ({ navigation }) => {
 
 
                     <Button
+                        disabled={!phoneNumber}
                         mode="elevated"
                         style={styles.LoginButton}
                         labelStyle={styles.LoginButtonLabel}
                         onPress={handleLogin}
+
                     >
                         เข้าสู่ระบบ
                     </Button>

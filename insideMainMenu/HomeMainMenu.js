@@ -26,11 +26,27 @@ import BranchList from './data/BranchList';
 
 import { Icon } from '@rneui/themed';
 
+import { get, ref, query, orderByChild, equalTo, getDatabase } from 'firebase/database';
+
+import { getAuth, PhoneAuthProvider, signInWithCredential, onAuthStateChanged } from "firebase/auth";
+import { FirebaseRecaptchaVerifierModal, FirebaseRecaptchaBanner } from 'expo-firebase-recaptcha';
+import { initializeApp, getApp } from 'firebase/app';
+
+
 const screen = Dimensions.get('screen');
 
-const HomeMainMenu = ({ navigation }) => {
+const HomeMainMenu = ({ navigation, auth }) => {
     const logo_text = require('../assets/logo_text.png');
     const [text, setText] = React.useState("");
+    const [user, setUser] = React.useState(null);
+
+    React.useEffect(() => {
+        var auth = getAuth();
+        auth.onAuthStateChanged(function (us) {
+            setUser(us);
+        });
+    }, []);
+
     return (
 
         <PaperProvider theme={theme}>
@@ -53,7 +69,7 @@ const HomeMainMenu = ({ navigation }) => {
                             color: '#757575',
                             fontSize: 14,
                         }}>
-                            123 มหาวิทยาลัย..
+                            {user.address}
                         </Text>
                     </TouchableOpacity>
 

@@ -3,7 +3,7 @@ import { StatusBar } from 'expo-status-bar';
 
 import {
     StyleSheet, Text, View,
-    TouchableOpacity, SafeAreaView,
+    TouchableOpacity, SafeAreaView, Alert,
     Image, AppRegistry, ImageBackground, Pressable
 } from 'react-native';
 
@@ -33,26 +33,28 @@ const Register = ({ navigation }) => {
     const handleRegister = () => {
         const db = getDatabase();
         const usersRef = ref(db, 'users');
-      
+
         const userData = {
-          username,
-          phoneNumber,
-          address,
-          postalCode
+            username,
+            phoneNumber,
+            address,
+            postalCode
         };
-      
+
         // Generate a new unique key for the user
         const newUserKey = push(usersRef).key;
-      
+
         // Set the new user data under the generated key
         set(ref(db, `users/${newUserKey}`), userData)
-          .then(() => {
-            console.log('User registered and data stored in the database:', userData);
-          })
-          .catch((error) => {
-            console.error('Error storing user data:', error);
-          });
-      };
+            .then(() => {
+                console.log('User registered and data stored in the database:', userData);
+            })
+            .catch((error) => {
+                console.error('Error storing user data:', error);
+            });
+
+        Alert.alert('ลงทะเบียนสำเร็จ', 'เข้าสู่ระบบได้เลย.');
+    };
 
 
     return (

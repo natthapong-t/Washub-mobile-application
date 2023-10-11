@@ -35,6 +35,14 @@ import RecentScreen from '../insideMainMenu/Recent'
 import OtherScreen from '../insideMainMenu/Other'
 import Other from '../insideMainMenu/Other';
 
+import { get, ref, query, orderByChild, equalTo, getDatabase } from 'firebase/database';
+
+import { getAuth, PhoneAuthProvider, signInWithCredential, onAuthStateChanged } from "firebase/auth";
+import { FirebaseRecaptchaVerifierModal, FirebaseRecaptchaBanner } from 'expo-firebase-recaptcha';
+import { initializeApp, getApp } from 'firebase/app';
+
+
+
 
 //Screen names
 const homeName = "Home";
@@ -47,10 +55,16 @@ const Tab = createBottomTabNavigator();
 
 
 
-const MainMenu = ({ navigation }) => {
+const MainMenu = ({ navigation, auth }) => {
     const logo_text = require('../assets/logo_text.png');
     const [text, setText] = React.useState("");
+    const [user, setUser] = React.useState(null);
 
+    React.useEffect(() => {
+        auth.onAuthStateChanged(function (us) {
+            setUser(us);
+        });
+    }, []);
 
 
     return (

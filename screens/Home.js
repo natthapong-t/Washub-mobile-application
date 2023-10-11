@@ -184,13 +184,13 @@ const styles = StyleSheet.create({
     height: 50,
     verticalAlign: 'middle',
     color: '#88AED0',
-    fontFamily: 'Prompt-Bold', //Prompt-Regular Prompt-Bold
+    //fontFamily: 'Prompt-Bold', //Prompt-Regular Prompt-Bold
   },
   LoginButtonLabel: {
     height: 50,
     verticalAlign: 'middle',
     color: '#fff',
-    fontFamily: 'Prompt-Bold', //Prompt-Regular Prompt-Bold
+    //fontFamily: 'Prompt-Bold', //Prompt-Regular Prompt-Bold
   },
   inputLabel: {
     color: '#88AED0',

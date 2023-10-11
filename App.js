@@ -9,20 +9,16 @@ import HomeScreen from './screens/Home'
 import MainMenuScreen from './screens/MainMenu'
 import OTPScreen from './screens/otp'
 
-
+import * as FirebaseCore from 'expo-firebase-core';
 
 import { useFonts } from 'expo-font';
 
-import { getAuth, RecaptchaVerifier } from "firebase/auth";
 
-
-import 'firebase/auth';
-import 'firebase/database';
 
 const Stack = createNativeStackNavigator();
 
 // Import the functions you need from the SDKs you need
-import { initializeApp, firebase } from "firebase/app";
+import { initializeApp } from "firebase/app";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
