@@ -55,16 +55,11 @@ const Tab = createBottomTabNavigator();
 
 
 
-const MainMenu = ({ navigation, auth }) => {
+const MainMenu = ({ navigation, route }) => {
     const logo_text = require('../assets/logo_text.png');
     const [text, setText] = React.useState("");
-    const [user, setUser] = React.useState(null);
+    //const auth = route.params.auth;
 
-    React.useEffect(() => {
-        auth.onAuthStateChanged(function (us) {
-            setUser(us);
-        });
-    }, []);
 
 
     return (

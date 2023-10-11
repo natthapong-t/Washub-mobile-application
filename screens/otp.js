@@ -29,21 +29,16 @@ import { initializeApp, getApp } from 'firebase/app';
 
 
 
-const OTPScreen = ({ navigation, verificationId, auth }) => {
+const OTPScreen = ({ navigation, route  }) => {
     const logo_text = require('../assets/logo_text.png');
     const [text, setText] = React.useState("");
     const [verificationCode, setVerificationCode] = React.useState();
     const [message, showMessage] = React.useState();
     const attemptInvisibleVerification = true;
-    const [user, setUser] = React.useState(null);
-    
 
-    React.useEffect(() => {
-        var auth = getAuth();
-        auth.onAuthStateChanged(function (us) {
-            setUser(us);
-        });
-    }, []);
+    
+    const auth = route.params.auth;
+    const verificationId = route.params.verificationId;
 
     return (
 
@@ -90,7 +85,7 @@ const OTPScreen = ({ navigation, verificationId, auth }) => {
                                 );
                                 await signInWithCredential(auth, credential);
                                 showMessage({ text: 'Phone authentication successful 👍' });
-                                navigation.navigate('MainMenu', auth)
+                                navigation.navigate('MainMenu')
                             } catch (err) {
                                 showMessage({ text: `Error: ${err.message}`, color: 'red' });
                             }
@@ -99,7 +94,7 @@ const OTPScreen = ({ navigation, verificationId, auth }) => {
                         เข้าสู่ระบบ
                     </Button>
                     <Text style={styles.textBtn}
-                        onPress={() => navigation.navigate('get otp again')}
+                        onPress={() => console.log('get otp again')}
                     >ยังไม่ได้รับ OTP? คลิกที่นี่
                     </Text>
 

@@ -46,7 +46,7 @@ const Login = ({ navigation }) => {
     const [message, showMessage] = React.useState();
     const attemptInvisibleVerification = true;
 
-    const [user, setUser] = React.useState(null);
+
 
 
     

@@ -35,17 +35,14 @@ import { initializeApp, getApp } from 'firebase/app';
 
 const screen = Dimensions.get('screen');
 
-const HomeMainMenu = ({ navigation, auth }) => {
+const HomeMainMenu = ({ navigation, route }) => {
     const logo_text = require('../assets/logo_text.png');
     const [text, setText] = React.useState("");
-    const [user, setUser] = React.useState(null);
 
-    React.useEffect(() => {
-        var auth = getAuth();
-        auth.onAuthStateChanged(function (us) {
-            setUser(us);
-        });
-    }, []);
+
+    //const auth = route.params.auth;
+
+
 
     return (
 
@@ -69,7 +66,7 @@ const HomeMainMenu = ({ navigation, auth }) => {
                             color: '#757575',
                             fontSize: 14,
                         }}>
-                            {user.address}
+                            ขอนแก่น
                         </Text>
                     </TouchableOpacity>
 
