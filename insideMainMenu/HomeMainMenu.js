@@ -104,7 +104,7 @@ const HomeMainMenu = ({ navigation, route, phoneNumber }) => {
                             color: '#757575',
                             fontSize: 14,
                         }}>
-                            
+
                             {userData ? (
                                 <Text> {userData.address}</Text>
                             ) : (
@@ -112,6 +112,7 @@ const HomeMainMenu = ({ navigation, route, phoneNumber }) => {
                             )}
 
                         </Text>
+
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.FavButton} onPress={() => console.log('favorite')} activeOpacity={0.85}>
@@ -171,31 +172,35 @@ const HomeMainMenu = ({ navigation, route, phoneNumber }) => {
 
                 </View>
 
-                <ScrollView style={styles.scrollStyle} overScrollMode="never" showsVerticalScrollIndicator={false} >
-                    <BranchList
-                        img={require('.././assets/branch-logo.png')}
-                        title="ร้านซักผ้า 1"
-                    />
+                <ScrollView contentContainerStyle={styles.scrollStyle} overScrollMode="never" showsVerticalScrollIndicator={false} >
+                    <View style={styles.branchContainer}>
+                        <BranchList
+                            img={require('.././assets/branch-logo.png')}
+                            title="ร้านซักผ้า 1"
+                        />
 
-                    <BranchList
-                        img={require('.././assets/branch-logo.png')}
-                        title="ร้านซักผ้า 2"
-                    />
+                        <BranchList
+                            img={require('.././assets/branch-logo.png')}
+                            title="ร้านซักผ้า 2"
+                        />
 
-                    <BranchList
-                        img={require('.././assets/branch-logo.png')}
-                        title="ร้านซักผ้า 3"
-                    />
+                        <BranchList
+                            img={require('.././assets/branch-logo.png')}
+                            title="ร้านซักผ้า 3"
+                        />
 
-                    <BranchList
-                        img={require('.././assets/branch-logo.png')}
-                        title="ร้านซักผ้า 4"
-                    />
+                        <BranchList
+                            img={require('.././assets/branch-logo.png')}
+                            title="ร้านซักผ้า 4"
+                        />
 
-                    <BranchList
-                        img={require('.././assets/branch-logo.png')}
-                        title="ร้านซักผ้า 5"
-                    />
+                        <BranchList
+                            img={require('.././assets/branch-logo.png')}
+                            title="ร้านซักผ้า 5"
+                        />
+
+                    </View>
+
                 </ScrollView>
 
 
@@ -228,6 +233,7 @@ const styles = StyleSheet.create({
         marginBottom: 0,
         flexDirection: 'row',
         alignItems: 'center',
+
     },
     banner: {
         width: '100%',
@@ -246,7 +252,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#F2F2F2',
-        width: 190,
+        width: 180,
         height: 115,
     },
     tinyLogo: {
@@ -278,6 +284,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 20,
         borderRadius: 15,
         marginTop: 20,
+        marginBottom: 10,
         flexDirection: "row",
         alignItems: "center",
         width: 375,
@@ -287,7 +294,14 @@ const styles = StyleSheet.create({
         shadowColor: '#1b1b1b',
     },
     scrollStyle: {
-        marginTop: 10,
+        marginTop: 0,
+    },
+    branchContainer: {
+        marginTop: 0,
+        width: screen.width,
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     FavButton: {
         elevation: 5,
@@ -311,6 +325,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#D8EDFF',
         height: 50,
     },
+
 
 
 

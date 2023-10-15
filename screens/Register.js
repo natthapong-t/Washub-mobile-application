@@ -91,7 +91,7 @@ const Register = ({ navigation }) => {
 
                     <TextInput
                         left={<TextInput.Icon icon="phone" disabled />}
-                        keyboardType="number-pad"
+                        keyboardType="phone-pad"
                         placeholderTextColor='#A4A6A8'
                         mode={'flat'}
                         placeholder='เบอร์โทรศัพท์'
@@ -130,7 +130,7 @@ const Register = ({ navigation }) => {
 
                     <TextInput
                         left={<TextInput.Icon icon="sign-direction" disabled />}
-                        keyboardType="number-pad"
+                        keyboardType="phone-pad"
                         placeholderTextColor='#A4A6A8'
                         mode={'flat'}
                         placeholder='รหัสไปรษณีย์'

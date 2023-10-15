@@ -33,7 +33,6 @@ import HomeMainMenuScreen from '../insideMainMenu/HomeMainMenu'
 import MapScreen from '../insideMainMenu/Map'
 import RecentScreen from '../insideMainMenu/Recent'
 import OtherScreen from '../insideMainMenu/Other'
-import Other from '../insideMainMenu/Other';
 
 import { get, ref, query, orderByChild, equalTo, getDatabase } from 'firebase/database';
 
@@ -101,13 +100,18 @@ const MainMenu = ({ navigation, route }) => {
 
                 <Tab.Screen
                     name={homeName}
-                    component={() => <HomeMainMenuScreen phoneNumber={phoneNumber} />}
                     options={{ headerShown: false }}
-                />
+                >
+                    {() => <HomeMainMenuScreen phoneNumber={phoneNumber} />}
+                </Tab.Screen>
                 <Tab.Screen name={mapName} component={MapScreen} />
                 <Tab.Screen name={recentName} component={RecentScreen} />
-                <Tab.Screen name={otherName} component={OtherScreen} />
-
+                <Tab.Screen
+                    name={otherName}
+                    options={{ headerShown: false }}
+                >
+                    {() => <OtherScreen phoneNumber={phoneNumber} navigation={navigation}/>}
+                </Tab.Screen>
             </Tab.Navigator>
 
 

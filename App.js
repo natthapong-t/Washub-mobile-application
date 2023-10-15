@@ -8,6 +8,7 @@ import RegisterScreen from './screens/Register'
 import HomeScreen from './screens/Home'
 import MainMenuScreen from './screens/MainMenu'
 import OTPScreen from './screens/otp'
+import OtherScreen from './insideMainMenu/Other'
 
 import * as FirebaseCore from 'expo-firebase-core';
 
@@ -111,6 +112,23 @@ const MyStack = () => {
         <Stack.Screen
           name="otp"
           component={OTPScreen}
+          options={{
+            headerShown: true,
+            title: '',
+            headerStyle: {
+              backgroundColor: '#C3E3FE'
+            },
+            headerTintColor: '#fff',
+            headerTitleAlign: 'center',
+            headerTitleStyle: {
+
+            }
+
+          }}
+        />
+        <Stack.Screen
+          name="Other"
+          component={OtherScreen}
           options={{
             headerShown: true,
             title: '',

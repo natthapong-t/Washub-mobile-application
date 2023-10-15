@@ -1,10 +1,11 @@
 import * as React from 'react';
+import { useState, useEffect  } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import FontAwesome, { SolidIcons, RegularIcons, BrandIcons } from 'react-native-fontawesome';
 
 import {
-    StyleSheet, Text, View,
-    TouchableOpacity, SafeAreaView,
+    StyleSheet, Text, View, Platform,
+    TouchableOpacity, SafeAreaView, Alert,
     Image, AppRegistry, ImageBackground, Pressable
 } from 'react-native';
 
@@ -14,31 +15,126 @@ import {
     configureFonts, MD2LightTheme
 } from 'react-native-paper';
 
-// import { name as appName } from './app.json';
-// import { useFonts } from 'expo-font';
-// import { assets } from './react-native.config';
+
 import bgImg from '../assets/bg.png'
 
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 
 
-const Other = ({ navigation }) => {
+import Constants from 'expo-constants';
+
+import { get, ref, query, orderByChild, equalTo, getDatabase } from 'firebase/database';
+
+import { Icon } from '@rneui/themed';
+
+import { getAuth, PhoneAuthProvider, signInWithCredential, onAuthStateChanged, signOut } from "firebase/auth";
+
+
+
+
+const Other = ({ navigation, phoneNumber }) => {
+
     const logo_text = require('../assets/logo_text.png');
     const [text, setText] = React.useState("");
+    const [userData, setUserData] = useState(null);
+
+
+    const fetchUserDataByPhoneNumber = async (phoneNumber) => {
+        const db = getDatabase();
+        const usersRef = ref(db, 'users');
+
+        try {
+            const usersSnapshot = await get(usersRef);
+            if (usersSnapshot.exists()) {
+                const users = usersSnapshot.val();
+                const userKey = Object.keys(users).find(key => users[key].phoneNumber === phoneNumber);
+
+                if (userKey) {
+                    const userData = users[userKey];
+                    return userData;
+                } else {
+                    throw new Error('User not found');
+                }
+            } else {
+                throw new Error('No users found');
+            }
+        } catch (error) {
+            throw new Error('Error fetching user data: ' + error.message);
+        }
+    };
+
+
+    React.useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const userData = await fetchUserDataByPhoneNumber(phoneNumber);
+                setUserData(userData);
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+            }
+        };
+
+        fetchData();
+    }, [phoneNumber]);
+
+    const handleLogout = async () => {
+        const auth = getAuth();
+        try {
+            await signOut(auth);
+            // Navigate to your login screen or any other appropriate screen after logout
+            Alert.alert('ออกจากระบบสำเร็จ', 'ท่านได้ทำการออกจากระบบแล้ว.');
+            navigation.navigate('Home');
+        } catch (error) {
+            console.error('Error signing out:', error);
+        }
+    };
+
+
+
     return (
 
         <PaperProvider theme={theme}>
-            
-                <View style={styles.View}>
+            <StatusBar style="auto" />
 
-                    <Text style={styles.textBtn}
-                        onPress={() => console.log('other screen')}
-                    >หน้า Other
-                    </Text>
-
+            <View style={styles.View}>
+                <View style={styles.MenuHeader}>
+                    <Text style={styles.headerText}>สวัสดี</Text>
+                    <Text style={styles.nameOfUser}>{userData ? (<Text> {userData.username}</Text>) : (<Text>Loading...</Text>)}</Text>
                 </View>
+
+                <TouchableOpacity style={styles.Button} activeOpacity={0.75}>
+                    <Text style={styles.ButtonLabel}>แก้ไขข้อมูลส่วนตัว</Text>
+                    <Icon
+                        name='chevron-forward'
+                        color='#757575'
+                        type='ionicon'
+                        size={30}
+                    />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.Button} activeOpacity={0.75}>
+                    <Text style={styles.ButtonLabel}>ที่อยู่ของฉัน</Text>
+                    <Icon
+                        name='chevron-forward'
+                        color='#757575'
+                        type='ionicon'
+                        size={30}
+                    />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.Button} activeOpacity={0.75} onPress={handleLogout}>
+                
+                    <Text style={styles.ButtonLabel}>ออกจากระบบ</Text>
+                    <Icon
+                        name='chevron-forward'
+                        color='#757575'
+                        type='ionicon'
+                        size={30}
+                    />
+                </TouchableOpacity>
+
+
+
+
+            </View>
 
 
         </PaperProvider>
@@ -47,37 +143,9 @@ const Other = ({ navigation }) => {
 
 const styles = StyleSheet.create({
     View: {
+        marginTop: Constants.statusBarHeight,
         flex: 1,
-        padding: 16,
-        justifyContent: 'center',
-        alignItems: 'center',
         backgroundColor: '#fff',
-    },
-    LoginButton: {
-        borderRadius: 15,
-        borderBottomWidth: 0,
-        backgroundColor: '#88AED0',
-        margin: 4,
-        width: 300,
-    }, 
-    LoginButtonLabel: {
-        fontFamily: 'Prompt-Bold',
-        height: 50,
-        verticalAlign: 'middle',
-        color: '#fff', // Change the text color here
-    },
-    inputLabel: {
-        fontFamily: 'Prompt-Regular',
-        color: '#88AED0', // Change the text color here
-        height: 50
-
-    },
-    InputForm: {
-        fontFamily: 'Prompt-Regular',
-        backgroundColor: '#f2f2f2',
-        borderRadius: 15,
-        margin: 4,
-        width: 300,
     },
     image: {
         margin: 4,
@@ -86,6 +154,39 @@ const styles = StyleSheet.create({
         color: '#88AED0',
         fontFamily: 'Prompt-Regular',
     },
+    MenuHeader: {
+        alignItems : 'center',
+        paddingHorizontal: 25,
+        flexDirection: 'row',
+        height: 85,
+        borderBottomColor: '#D4D4D4',
+        borderBottomWidth: 2,
+
+    },
+    headerText: {
+        color: '#757575',
+        fontFamily: 'Prompt-Bold',
+        fontSize: 18,
+    },
+    nameOfUser: {
+        color: '#88AED0',
+        fontFamily: 'Prompt-Bold',
+        fontSize: 18,
+    },
+    Button: {
+        borderBottomColor: '#D4D4D4',
+        borderBottomWidth: 2,
+        flexDirection: "row",
+        justifyContent: 'space-between',
+        paddingVertical: 20,
+        paddingLeft: 20,
+        paddingRight: 20,
+        alignItems: 'center',
+    },
+    ButtonLabel: {
+        fontFamily: 'Prompt-Regular',
+        fontSize: 15,
+    }
 });
 
 

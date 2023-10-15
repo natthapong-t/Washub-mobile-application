@@ -87,7 +87,7 @@ const OTPScreen = ({ navigation, route  }) => {
                                 );
                                 await signInWithCredential(auth, credential);
                                 showMessage({ text: 'Phone authentication successful 👍' });
-                                navigation.navigate('MainMenu', { phoneNumber: phoneNumber })
+                                navigation.navigate('MainMenu', { phoneNumber })
                             } catch (err) {
                                 showMessage({ text: `Error: ${err.message}`, color: 'red' });
                             }
