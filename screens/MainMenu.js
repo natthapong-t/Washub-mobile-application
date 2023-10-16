@@ -5,7 +5,7 @@ import FontAwesome, { SolidIcons, RegularIcons, BrandIcons } from 'react-native-
 import {
     StyleSheet, Text, View,
     TouchableOpacity, SafeAreaView,
-    Image, AppRegistry, ImageBackground, Pressable
+    Image, AppRegistry, ImageBackground, Pressable, Modal 
 } from 'react-native';
 
 import {

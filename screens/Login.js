@@ -49,22 +49,23 @@ const Login = ({ navigation }) => {
 
 
 
-    
+
 
 
     const handleLogin = async () => {
         // Check if the phone number exists in the 'users' database
         const phoneNumberExists = await checkPhoneNumberExists(phoneNumber);
+        const formattedPhoneNumber = phoneNumber.startsWith('0') ? `+66${phoneNumber.substring(1)}` : phoneNumber;
 
         if (phoneNumberExists) {
             try {
                 const phoneProvider = new PhoneAuthProvider(auth);
                 const verificationId = await phoneProvider.verifyPhoneNumber(
-                    phoneNumber,
+                    formattedPhoneNumber,
                     recaptchaVerifier.current
                 );
                 setVerificationId(verificationId);
-                navigation.navigate('otp', { verificationId, auth, phoneNumber });
+                navigation.navigate('otp', { verificationId, auth, phoneNumber: formattedPhoneNumber });
             } catch (err) {
                 Alert.alert('Verification Error', `Error: ${err.message}`);
             }
@@ -78,13 +79,19 @@ const Login = ({ navigation }) => {
     const checkPhoneNumberExists = async (phoneNumber) => {
         const db = getDatabase();
         const usersRef = ref(db, 'users');
-
+    
         try {
-            const phoneNumberQuery = query(usersRef, orderByChild('phoneNumber'), equalTo(phoneNumber));
-            const snapshot = await get(phoneNumberQuery);
-
-            // Check if the snapshot has any data (i.e., phone number exists in the database)
-            return snapshot.exists();
+            const snapshot = await get(usersRef);
+    
+            if (snapshot.exists()) {
+                const userData = snapshot.val();
+                const phoneNumbers = Object.values(userData).map(user => user.phoneNumber);
+    
+                // Check if the phone number or its formatted version exists
+                return phoneNumbers.includes(phoneNumber) || phoneNumbers.includes(`+66${phoneNumber.substring(1)}`);
+            }
+    
+            return false;
         } catch (error) {
             console.error('Error checking phone number:', error);
             return false; // Assume phone number doesn't exist on error
@@ -119,7 +126,7 @@ const Login = ({ navigation }) => {
                         autoCompleteType="tel"
                         placeholderTextColor='#A4A6A8'
                         mode={'flat'}
-                        placeholder='(+66)เบอร์โทรศัพท์'
+                        placeholder='เบอร์โทรศัพท์'
                         placeholderStyle={styles.InputForm}
                         style={styles.InputForm}
                         labelStyle={styles.inputLabel}

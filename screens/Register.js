@@ -33,10 +33,10 @@ const Register = ({ navigation }) => {
     const handleRegister = () => {
         const db = getDatabase();
         const usersRef = ref(db, 'users');
-
+        const formattedPhoneNumber = phoneNumber.startsWith('0') ? `+66${phoneNumber.substring(1)}` : phoneNumber;
         const userData = {
             username,
-            phoneNumber,
+            phoneNumber: formattedPhoneNumber,
             address,
             postalCode
         };

@@ -6,7 +6,7 @@ import FontAwesome, { SolidIcons, RegularIcons, BrandIcons } from 'react-native-
 import {
     StyleSheet, Text, View, Platform,
     TouchableOpacity, SafeAreaView, Alert,
-    Image, AppRegistry, ImageBackground, Pressable, TouchableHighlight, Modal
+    Image, AppRegistry, ImageBackground, Pressable, TouchableHighlight
 } from 'react-native';
 
 import {
@@ -25,19 +25,13 @@ import { Icon } from '@rneui/themed';
 
 import { getAuth, PhoneAuthProvider, signInWithCredential, onAuthStateChanged, signOut } from "firebase/auth";
 
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
-import MyAddress from './insideOther/MyAddress';
-
-import { useNavigation } from '@react-navigation/native';
-
-const Other = ({ navigation, phoneNumber }) => {
 
 
-    const [text, setText] = React.useState("");
+
+const MyAddress = ({ navigation, route  }) => {
+
+    const { phoneNumber } = route.params;
     const [userData, setUserData] = useState(null);
-
-    
 
     const fetchUserDataByPhoneNumber = async (phoneNumber) => {
         const db = getDatabase();
@@ -77,57 +71,28 @@ const Other = ({ navigation, phoneNumber }) => {
         fetchData();
     }, [phoneNumber]);
 
-    const handleLogout = () => {
-        Alert.alert(
-            'ยืนยันออกจากระบบ',
-            'ท่านต้องการที่จะออกจากระบบหรือไม่?',
-            [
-                {
-                    text: 'ยกเลิก',
-                    onPress: () => console.log('ยกเลิกการออกจากระบบ'),
-                    style: 'cancel'
-                },
-                {
-                    text: 'ออกจากระบบ',
-                    onPress: async () => {
-                        const auth = getAuth();
-                        try {
-                            await signOut(auth);
-                            Alert.alert('ออกจากระบบสำเร็จ', 'ท่านได้ทำการออกจากระบบแล้ว.');
-                            navigation.navigate('Home');
-                        } catch (error) {
-                            console.error('Error signing out:', error);
-                        }
-                    }
-                }
-            ],
-            { cancelable: false }
-        );
-    };
 
 
 
     return (
-
+        
         <PaperProvider theme={theme}>
             <StatusBar style="auto" />
 
             <View style={styles.View}>
                 <View style={styles.MenuHeader}>
-                    <Text style={styles.headerText}>สวัสดี</Text>
-                    <Text style={styles.nameOfUser}>{userData ? (<Text> {userData.username}</Text>) : (<Text>Loading...</Text>)}</Text>
-                    <Text style={styles.nameOfUser}>{userData ? (<Text> {userData.phoneNumber}</Text>) : (<Text>Loading...</Text>)}</Text>
+                    <Text style={styles.headerText}>ที่อยู่ของฉัน</Text>
                 </View>
 
                 <TouchableHighlight
                     activeOpacity={0.85}
                     underlayColor="#f2f2f2"
-                    onPress={() => navigation.navigate('MyAddress', {phoneNumber}, {navigation})}
+                    onPress={() => console.log('แก้ไขข้อมูลส่วนตัว')}
                 >
                     <View style={styles.Button}>
-                        <Text style={styles.ButtonLabel}>แก้ไขข้อมูลส่วนตัว</Text>
+                        <Text style={styles.ButtonLabel}> {userData ? (<Text> {userData.address}</Text>) : (<Text>Loading...</Text>)}</Text>
                         <Icon
-                            name='chevron-forward'
+                            name='pencil-sharp'
                             color='#757575'
                             type='ionicon'
                             size={30}
@@ -135,43 +100,6 @@ const Other = ({ navigation, phoneNumber }) => {
                     </View>
 
                 </TouchableHighlight>
-
-                <TouchableHighlight
-                    activeOpacity={0.85}
-                    underlayColor="#f2f2f2"
-                    onPress={() => console.log('ที่อยู่ของฉัน')}
-                >
-                    <View style={styles.Button}>
-                        <Text style={styles.ButtonLabel}>ที่อยู่ของฉัน</Text>
-                        <Icon
-                            name='chevron-forward'
-                            color='#757575'
-                            type='ionicon'
-                            size={30}
-                        />
-                    </View>
-
-                </TouchableHighlight>
-
-
-                <TouchableHighlight
-                    activeOpacity={0.85}
-                    underlayColor="#f2f2f2"
-                    onPress={handleLogout}
-                >
-                    <View style={styles.Button}>
-                        <Text style={styles.ButtonLabel}>ออกจากระบบ</Text>
-                        <Icon
-                            name='chevron-forward'
-                            color='#757575'
-                            type='ionicon'
-                            size={30}
-                        />
-                    </View>
-
-                </TouchableHighlight>
-
-
 
 
 
@@ -203,9 +131,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 25,
         flexDirection: 'row',
         height: 85,
-        borderBottomColor: '#D4D4D4',
-        borderBottomWidth: 2,
-
     },
     headerText: {
         color: '#1b1b1b',
@@ -218,18 +143,20 @@ const styles = StyleSheet.create({
         fontSize: 18,
     },
     Button: {
-        borderBottomColor: '#D4D4D4',
-        borderBottomWidth: 2,
         flexDirection: "row",
         justifyContent: 'space-between',
         paddingVertical: 20,
         paddingLeft: 20,
         paddingRight: 20,
+        marginHorizontal: 20,
+        borderRadius: 15,
         alignItems: 'center',
+        backgroundColor: '#f2f2f2',
     },
     ButtonLabel: {
         fontFamily: 'Prompt-Regular',
         fontSize: 15,
+        color: '#757575',
     }
 });
 
@@ -283,4 +210,4 @@ const theme = {
 };
 
 
-export default Other;
+export default MyAddress;

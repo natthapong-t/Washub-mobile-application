@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createNativeStackNavigator, CardStyleInterpolators } from '@react-navigation/native-stack';
 
 import LoginScreen from './screens/Login'
 import RegisterScreen from './screens/Register'
@@ -9,10 +9,19 @@ import HomeScreen from './screens/Home'
 import MainMenuScreen from './screens/MainMenu'
 import OTPScreen from './screens/otp'
 import OtherScreen from './insideMainMenu/Other'
+import MyAddressScreen from './insideMainMenu/insideOther/MyAddress'
+// import MyProfile from './insideMainMenu/insideOther/MyProfile'
+
+
+
+
+
 
 import * as FirebaseCore from 'expo-firebase-core';
 
 import { useFonts } from 'expo-font';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
@@ -50,7 +59,7 @@ const MyStack = () => {
 
 
   return (
-    
+
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
@@ -130,7 +139,25 @@ const MyStack = () => {
           name="Other"
           component={OtherScreen}
           options={{
-            headerShown: true,
+            headerShown: false,
+            title: '',
+            headerStyle: {
+              backgroundColor: '#C3E3FE'
+            },
+            headerTintColor: '#fff',
+            headerTitleAlign: 'center',
+            headerTitleStyle: {
+
+            }
+
+          }}
+        />
+
+        <Stack.Screen
+          name="MyAddress"
+          component={MyAddressScreen}
+          options={{
+            headerShown: false,
             title: '',
             headerStyle: {
               backgroundColor: '#C3E3FE'
