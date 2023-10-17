@@ -22,21 +22,23 @@ import bgImg from '../assets/bg.png'
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { getAuth, PhoneAuthProvider, signInWithCredential, onAuthStateChanged  } from "firebase/auth";
+import { getAuth, PhoneAuthProvider, signInWithCredential, onAuthStateChanged } from "firebase/auth";
 import { FirebaseRecaptchaVerifierModal, FirebaseRecaptchaBanner } from 'expo-firebase-recaptcha';
 import { initializeApp, getApp } from 'firebase/app';
 
+import { Icon } from '@rneui/themed';
+
+import Constants from 'expo-constants';
 
 
-
-const OTPScreen = ({ navigation, route  }) => {
+const OTPScreen = ({ navigation, route }) => {
     const logo_text = require('../assets/logo_text.png');
     const [text, setText] = React.useState("");
     const [verificationCode, setVerificationCode] = React.useState();
     const [message, showMessage] = React.useState();
     const attemptInvisibleVerification = true;
 
-    
+
     const auth = route.params.auth;
     const verificationId = route.params.verificationId;
     const phoneNumber = route.params.phoneNumber;
@@ -45,7 +47,15 @@ const OTPScreen = ({ navigation, route  }) => {
     return (
 
         <PaperProvider theme={theme}>
-            <ImageBackground ImageBackground source={bgImg} style={styles.View}>
+            <ImageBackground ImageBackground source={bgImg} style={styles.backgroundStyle}>
+                <TouchableOpacity style={styles.BackButton} onPress={() => navigation.goBack()} activeOpacity={0.85}>
+                    <Icon
+                        name="chevron-back"
+                        size={24}
+                        color="#1b1b1b"
+                        type='ionicon'
+                    />
+                </TouchableOpacity>
                 <View style={styles.View}>
 
 
@@ -139,6 +149,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    backgroundStyle: {
+        flex: 1,
+        paddingTop: Constants.statusBarHeight,
+    },
     LoginButton: {
         borderRadius: 15,
         borderBottomWidth: 0,
@@ -174,6 +188,22 @@ const styles = StyleSheet.create({
         color: '#88AED0',
         fontFamily: 'Prompt-Regular',
     },
+    BackButton: {
+        elevation: 5,
+        marginTop: 15,
+        marginLeft: 15,
+        flexDirection: 'row',
+        borderRadius: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        width: 30,
+        height: 30,
+    },
+
+
+
+
 });
 
 

@@ -111,6 +111,7 @@ const HomeMainMenu = ({ navigation, route, phoneNumber }) => {
 
                 <View style={styles.containerRow2}>
                     <TouchableOpacity
+                        activeOpacity={0.85}
                         style={styles.AddressButton}
                         onPress={() => navigation.navigate('MyAddress', { phoneNumber }, { navigation })}
                     >

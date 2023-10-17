@@ -117,7 +117,7 @@ const Other = ({ navigation, phoneNumber }) => {
                 .catch(error => console.error('Error fetching user data:', error));
         }
     }, [isFocused]);
-    
+
 
 
     return (

@@ -20,6 +20,10 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { getDatabase, ref, set, push } from 'firebase/database';
 
+import { Icon } from '@rneui/themed';
+
+import Constants from 'expo-constants';
+
 
 const Register = ({ navigation }) => {
     const logo_text = require('../assets/logo_text.png');
@@ -60,9 +64,19 @@ const Register = ({ navigation }) => {
     return (
 
         <PaperProvider theme={theme}>
-            <ImageBackground ImageBackground source={bgImg} style={styles.View}>
-                <View style={styles.View}>
 
+            <ImageBackground ImageBackground source={bgImg} style={styles.backgroundStyle}>
+
+                <TouchableOpacity style={styles.BackButton} onPress={() => navigation.goBack()} activeOpacity={0.85}>
+                    <Icon
+                        name="chevron-back"
+                        size={24}
+                        color="#1b1b1b"
+                        type='ionicon'
+                    />
+                </TouchableOpacity>
+
+                <View style={styles.View}>
 
                     <Image
                         style={{ width: 200, height: 60, marginVertical: 8 }}
@@ -183,6 +197,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    backgroundStyle: {
+        flex: 1,
+        paddingTop: Constants.statusBarHeight,
+    },
     RegisterButton: {
         borderRadius: 15,
         borderBottomWidth: 0,
@@ -221,7 +239,19 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         width: 300,
         color: '#A4A6A8',
-    }
+    },
+    BackButton: {
+        elevation: 5,
+        marginTop: 15,
+        marginLeft: 15,
+        flexDirection: 'row',
+        borderRadius: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        width: 30,
+        height: 30,
+    },
 });
 
 

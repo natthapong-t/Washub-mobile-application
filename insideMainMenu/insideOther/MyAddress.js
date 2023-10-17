@@ -27,7 +27,7 @@ import { getAuth, PhoneAuthProvider, signInWithCredential, onAuthStateChanged, s
 
 import { TextInput as RNTextInput } from 'react-native';
 
-
+import { useNavigation, useIsFocused } from '@react-navigation/native';
 
 
 const MyAddress = ({ navigation, route }) => {
@@ -129,13 +129,20 @@ const MyAddress = ({ navigation, route }) => {
 
             <View style={styles.View}>
                 <View style={styles.MenuHeader}>
-                    <Text style={styles.headerText}>ที่อยู่ของฉัน : </Text>
-                    <Text style={styles.nameOfUser}>{userData ? (<Text> {userData.username}</Text>) : (<Text>Loading...</Text>)}</Text>
+                    <TouchableOpacity style={styles.BackButton} onPress={() => navigation.goBack()} activeOpacity={0.85}>
+                        <Icon
+                            name="chevron-back"
+                            size={24}
+                            color="#1b1b1b"
+                            type='ionicon'
+                        />
+                    </TouchableOpacity>
+                    <Text style={styles.headerText}>ที่อยู่ของฉัน</Text>
                 </View>
 
                 <View style={styles.infoBox}>
                     <TextInput
-                        right={<TextInput.Icon icon="pencil" color = "#757575"/>}
+                        right={<TextInput.Icon icon="pencil" color="#757575" />}
                         placeholder={(address !== null && address !== '') ? address : (userData && userData.address) || ''}
                         placeholderTextColor='#757575'
                         mode={'flat'}
@@ -154,7 +161,7 @@ const MyAddress = ({ navigation, route }) => {
 
                 <View style={styles.infoBox}>
                     <TextInput
-                        right={<TextInput.Icon icon="pencil" color = "#757575"/>}
+                        right={<TextInput.Icon icon="pencil" color="#757575" />}
                         placeholder={(postalCode !== null && postalCode !== '') ? postalCode : (userData && userData.postalCode) || ''}
                         placeholderTextColor='#757575'
                         mode={'flat'}
@@ -258,6 +265,17 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         margin: 4,
         width: '100%',
+    },
+    BackButton: {
+        elevation: 5,
+        marginRight: 10,
+        flexDirection: 'row',
+        borderRadius: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        width: 30,
+        height: 30,
     },
 
 });

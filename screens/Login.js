@@ -27,9 +27,9 @@ import { getAuth, PhoneAuthProvider, signInWithCredential, onAuthStateChanged } 
 import { FirebaseRecaptchaVerifierModal, FirebaseRecaptchaBanner } from 'expo-firebase-recaptcha';
 import { initializeApp, getApp } from 'firebase/app';
 
+import { Icon } from '@rneui/themed';
 
-
-
+import Constants from 'expo-constants';
 
 
 const Login = ({ navigation }) => {
@@ -79,18 +79,18 @@ const Login = ({ navigation }) => {
     const checkPhoneNumberExists = async (phoneNumber) => {
         const db = getDatabase();
         const usersRef = ref(db, 'users');
-    
+
         try {
             const snapshot = await get(usersRef);
-    
+
             if (snapshot.exists()) {
                 const userData = snapshot.val();
                 const phoneNumbers = Object.values(userData).map(user => user.phoneNumber);
-    
+
                 // Check if the phone number or its formatted version exists
                 return phoneNumbers.includes(phoneNumber) || phoneNumbers.includes(`+66${phoneNumber.substring(1)}`);
             }
-    
+
             return false;
         } catch (error) {
             console.error('Error checking phone number:', error);
@@ -102,7 +102,16 @@ const Login = ({ navigation }) => {
     return (
 
         <PaperProvider theme={theme}>
-            <ImageBackground ImageBackground source={bgImg} style={styles.View}>
+
+            <ImageBackground ImageBackground source={bgImg} style={styles.backgroundStyle}>
+                <TouchableOpacity style={styles.BackButton} onPress={() => navigation.goBack()} activeOpacity={0.85}>
+                    <Icon
+                        name="chevron-back"
+                        size={24}
+                        color="#1b1b1b"
+                        type='ionicon'
+                    />
+                </TouchableOpacity>
                 <View style={styles.View}>
 
 
@@ -177,6 +186,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    backgroundStyle: {
+        flex: 1,
+        paddingTop: Constants.statusBarHeight,
+    },
     LoginButton: {
         borderRadius: 15,
         borderBottomWidth: 0,
@@ -211,6 +224,18 @@ const styles = StyleSheet.create({
     textBtn: {
         color: '#88AED0',
         fontFamily: 'Prompt-Regular',
+    },
+    BackButton: {
+        elevation: 5,
+        marginTop: 15,
+        marginLeft: 15,
+        flexDirection: 'row',
+        borderRadius: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        width: 30,
+        height: 30,
     },
 });
 

@@ -73,6 +73,7 @@ const MyStack = () => {
           name="Login"
           component={LoginScreen}
           options={{
+            headerShown: false,
             title: '',
             headerStyle: {
               backgroundColor: '#C3E3FE'
@@ -89,6 +90,7 @@ const MyStack = () => {
           name="Register"
           component={RegisterScreen}
           options={{
+            headerShown: false,
             title: '',
             headerStyle: {
               backgroundColor: '#C3E3FE'
@@ -122,7 +124,7 @@ const MyStack = () => {
           name="otp"
           component={OTPScreen}
           options={{
-            headerShown: true,
+            headerShown: false,
             title: '',
             headerStyle: {
               backgroundColor: '#C3E3FE'
