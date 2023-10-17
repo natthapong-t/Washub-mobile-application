@@ -124,8 +124,10 @@ const HomeMainMenu = ({ navigation, route, phoneNumber }) => {
                             )}
                         </Text>
                     </TouchableOpacity>
+                    
 
-                    <TouchableOpacity style={styles.FavButton} onPress={() => console.log('favorite')} activeOpacity={0.85}>
+                    {/* navigaton test in fav button*/}
+                    <TouchableOpacity style={styles.FavButton} onPress={() => navigation.navigate('Favorite', { phoneNumber })} activeOpacity={0.85}>
                         <Icon
                             name='heart'
                             color='#FF5656'
