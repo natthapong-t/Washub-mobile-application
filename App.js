@@ -10,7 +10,7 @@ import MainMenuScreen from './screens/MainMenu'
 import OTPScreen from './screens/otp'
 import OtherScreen from './insideMainMenu/Other'
 import MyAddressScreen from './insideMainMenu/insideOther/MyAddress'
-// import MyProfile from './insideMainMenu/insideOther/MyProfile'
+import MyProfileScreen from './insideMainMenu/insideOther/MyProfile'
 
 
 
@@ -156,6 +156,24 @@ const MyStack = () => {
         <Stack.Screen
           name="MyAddress"
           component={MyAddressScreen}
+          options={{
+            headerShown: false,
+            title: '',
+            headerStyle: {
+              backgroundColor: '#C3E3FE'
+            },
+            headerTintColor: '#fff',
+            headerTitleAlign: 'center',
+            headerTitleStyle: {
+
+            }
+
+          }}
+        />
+
+        <Stack.Screen
+          name="MyProfile"
+          component={MyProfileScreen}
           options={{
             headerShown: false,
             title: '',

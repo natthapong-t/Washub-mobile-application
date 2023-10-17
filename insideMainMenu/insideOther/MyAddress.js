@@ -135,9 +135,9 @@ const MyAddress = ({ navigation, route }) => {
 
                 <View style={styles.infoBox}>
                     <TextInput
-                        right={<TextInput.Icon icon="pencil" />}
+                        right={<TextInput.Icon icon="pencil" color = "#757575"/>}
                         placeholder={(address !== null && address !== '') ? address : (userData && userData.address) || ''}
-                        placeholderTextColor='#A4A6A8'
+                        placeholderTextColor='#757575'
                         mode={'flat'}
                         style={styles.InputStyle}
                         onChangeText={(val) => setAddress(val)}
@@ -154,9 +154,9 @@ const MyAddress = ({ navigation, route }) => {
 
                 <View style={styles.infoBox}>
                     <TextInput
-                        right={<TextInput.Icon icon="pencil" />}
+                        right={<TextInput.Icon icon="pencil" color = "#757575"/>}
                         placeholder={(postalCode !== null && postalCode !== '') ? postalCode : (userData && userData.postalCode) || ''}
-                        placeholderTextColor='#A4A6A8'
+                        placeholderTextColor='#757575'
                         mode={'flat'}
                         style={styles.InputStyle}
                         onChangeText={(val) => setPostalCode(val)}

@@ -29,7 +29,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import MyAddress from './insideOther/MyAddress';
 
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useIsFocused} from '@react-navigation/native';
+
+
 
 const Other = ({ navigation, phoneNumber }) => {
 
@@ -105,6 +107,17 @@ const Other = ({ navigation, phoneNumber }) => {
         );
     };
 
+    // Fetch user data when the screen is focused
+    const isFocused = useIsFocused();
+
+    useEffect(() => {
+        if (isFocused) {
+            fetchUserDataByPhoneNumber(phoneNumber)
+                .then(userData => setUserData(userData))
+                .catch(error => console.error('Error fetching user data:', error));
+        }
+    }, [isFocused]);
+    
 
 
     return (
@@ -121,7 +134,7 @@ const Other = ({ navigation, phoneNumber }) => {
                 <TouchableHighlight
                     activeOpacity={0.85}
                     underlayColor="#f2f2f2"
-                    onPress={() => console.log('แก้ไขข้อมูลส่วนตัว')}
+                    onPress={() => navigation.navigate('MyProfile', {phoneNumber}, {navigation})}
                 >
                     <View style={styles.Button}>
                         <Text style={styles.ButtonLabel}>แก้ไขข้อมูลส่วนตัว</Text>
