@@ -116,13 +116,12 @@ const Other = ({ navigation, phoneNumber }) => {
                 <View style={styles.MenuHeader}>
                     <Text style={styles.headerText}>สวัสดี</Text>
                     <Text style={styles.nameOfUser}>{userData ? (<Text> {userData.username}</Text>) : (<Text>Loading...</Text>)}</Text>
-                    <Text style={styles.nameOfUser}>{userData ? (<Text> {userData.phoneNumber}</Text>) : (<Text>Loading...</Text>)}</Text>
                 </View>
 
                 <TouchableHighlight
                     activeOpacity={0.85}
                     underlayColor="#f2f2f2"
-                    onPress={() => navigation.navigate('MyAddress', {phoneNumber}, {navigation})}
+                    onPress={() => console.log('แก้ไขข้อมูลส่วนตัว')}
                 >
                     <View style={styles.Button}>
                         <Text style={styles.ButtonLabel}>แก้ไขข้อมูลส่วนตัว</Text>
@@ -139,7 +138,7 @@ const Other = ({ navigation, phoneNumber }) => {
                 <TouchableHighlight
                     activeOpacity={0.85}
                     underlayColor="#f2f2f2"
-                    onPress={() => console.log('ที่อยู่ของฉัน')}
+                    onPress={() => navigation.navigate('MyAddress', {phoneNumber}, {navigation})}
                 >
                     <View style={styles.Button}>
                         <Text style={styles.ButtonLabel}>ที่อยู่ของฉัน</Text>

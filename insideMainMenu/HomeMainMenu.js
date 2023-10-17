@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import FontAwesome, { SolidIcons, RegularIcons, BrandIcons } from 'react-native-fontawesome';
 import Constants from 'expo-constants';
@@ -14,6 +14,8 @@ import {
     Provider as PaperProvider, DefaultTheme,
     configureFonts, MD2LightTheme
 } from 'react-native-paper';
+
+import { useIsFocused } from '@react-navigation/native';
 
 // import { name as appName } from './app.json';
 // import { useFonts } from 'expo-font';
@@ -35,8 +37,6 @@ import { initializeApp, getApp } from 'firebase/app';
 
 
 const screen = Dimensions.get('screen');
-
-
 
 
 const HomeMainMenu = ({ navigation, route, phoneNumber }) => {
@@ -82,6 +82,25 @@ const HomeMainMenu = ({ navigation, route, phoneNumber }) => {
         fetchData();
     }, [phoneNumber]);
 
+    // Fetch user data when the screen is focused
+    const isFocused = useIsFocused();
+
+    useEffect(() => {
+        if (isFocused) {
+            fetchUserDataByPhoneNumber(phoneNumber)
+                .then(userData => setUserData(userData))
+                .catch(error => console.error('Error fetching user data:', error));
+        }
+    }, [isFocused]);
+
+    const truncateAddress = (address, maxLength) => {
+        if (address.length > maxLength) {
+            return `${address.substring(0, maxLength)}...`;
+        }
+        return address;
+    };
+
+
     return (
 
         <PaperProvider theme={theme}>
@@ -91,28 +110,18 @@ const HomeMainMenu = ({ navigation, route, phoneNumber }) => {
                 </View>
 
                 <View style={styles.containerRow2}>
-                    <TouchableOpacity style={styles.AddressButton} onPress={() => console.log('address')} activeOpacity={0.85}>
-                        <Icon
-                            name='location-sharp'
-                            color='#78A2CC'
-                            type='ionicon'
-                            size={30}
-                        />
-
-                        <Text style={{
-                            fontFamily: 'Prompt-Regular',
-                            color: '#757575',
-                            fontSize: 14,
-                        }}>
-
+                    <TouchableOpacity
+                        style={styles.AddressButton}
+                        onPress={() => navigation.navigate('MyAddress', { phoneNumber }, { navigation })}
+                    >
+                        <Icon name='location-sharp' color='#78A2CC' type='ionicon' size={30} />
+                        <Text style={{ fontFamily: 'Prompt-Regular', color: '#757575', fontSize: 14 }}>
                             {userData ? (
-                                <Text> {userData.address}</Text>
+                                <Text>{truncateAddress(userData.address, 15)}</Text> // Adjust the maxLength as needed
                             ) : (
                                 <Text>Loading...</Text>
                             )}
-
                         </Text>
-
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.FavButton} onPress={() => console.log('favorite')} activeOpacity={0.85}>

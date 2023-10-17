@@ -19,17 +19,20 @@ import {
 
 import Constants from 'expo-constants';
 
-import { get, ref, query, orderByChild, equalTo, getDatabase } from 'firebase/database';
+import { get, ref, query, orderByChild, equalTo, getDatabase, update } from 'firebase/database';
 
 import { Icon } from '@rneui/themed';
 
 import { getAuth, PhoneAuthProvider, signInWithCredential, onAuthStateChanged, signOut } from "firebase/auth";
 
+import { TextInput as RNTextInput } from 'react-native';
 
 
 
-const MyAddress = ({ navigation, route  }) => {
 
+const MyAddress = ({ navigation, route }) => {
+    const [address, setAddress] = useState('');  // Updated to use state
+    const [postalCode, setPostalCode] = useState('');  // Updated to use state
     const { phoneNumber } = route.params;
     const [userData, setUserData] = useState(null);
 
@@ -57,6 +60,51 @@ const MyAddress = ({ navigation, route  }) => {
         }
     };
 
+    const handleSave = async () => {
+        try {
+            // Check if address or postalCode is empty, if so, do nothing
+            if (!address.trim() && !postalCode.trim()) {
+                console.log('No changes to update.');
+                Alert.alert('ไม่มีการเปลี่ยนแปลง', 'กรุณากรอกข้อมูลที่ต้องการเปลี่ยน');
+                return;
+            }
+
+            const db = getDatabase();
+            const usersRef = ref(db, 'users');
+
+            // Find the user by phoneNumber
+            const userQuery = query(usersRef, orderByChild('phoneNumber'), equalTo(phoneNumber));
+            const userSnapshot = await get(userQuery);
+
+            if (userSnapshot.exists()) {
+                const userData = userSnapshot.val();
+                const userKey = Object.keys(userData)[0]; // Assuming there's only one user with a particular phone number
+
+                // Reference the specific user using their key
+                const userRef = ref(db, `users/${userKey}`);
+
+                // Prepare the data to update
+                const updatedData = {};
+                if (address.trim()) {
+                    updatedData.address = address;
+                }
+                if (postalCode.trim()) {
+                    updatedData.postalCode = postalCode;
+                }
+
+                // Update the user's data with the new address and postal code
+                await update(userRef, updatedData);
+
+                console.log('User data updated successfully:', userData);
+                Alert.alert('บันทึกข้อมูลสำเร็จ', 'ข้อมูลถูกบันทึกเรียบร้อย');
+            } else {
+                console.error('User not found');
+            }
+        } catch (error) {
+            console.error('Error updating user data:', error);
+        }
+    };
+
 
     React.useEffect(() => {
         const fetchData = async () => {
@@ -75,31 +123,64 @@ const MyAddress = ({ navigation, route  }) => {
 
 
     return (
-        
+
         <PaperProvider theme={theme}>
             <StatusBar style="auto" />
 
             <View style={styles.View}>
                 <View style={styles.MenuHeader}>
-                    <Text style={styles.headerText}>ที่อยู่ของฉัน</Text>
+                    <Text style={styles.headerText}>ที่อยู่ของฉัน : </Text>
+                    <Text style={styles.nameOfUser}>{userData ? (<Text> {userData.username}</Text>) : (<Text>Loading...</Text>)}</Text>
                 </View>
 
-                <TouchableHighlight
-                    activeOpacity={0.85}
-                    underlayColor="#f2f2f2"
-                    onPress={() => console.log('แก้ไขข้อมูลส่วนตัว')}
-                >
-                    <View style={styles.Button}>
-                        <Text style={styles.ButtonLabel}> {userData ? (<Text> {userData.address}</Text>) : (<Text>Loading...</Text>)}</Text>
-                        <Icon
-                            name='pencil-sharp'
-                            color='#757575'
-                            type='ionicon'
-                            size={30}
-                        />
-                    </View>
+                <View style={styles.infoBox}>
+                    <TextInput
+                        right={<TextInput.Icon icon="pencil" />}
+                        placeholder={(address !== null && address !== '') ? address : (userData && userData.address) || ''}
+                        placeholderTextColor='#A4A6A8'
+                        mode={'flat'}
+                        style={styles.InputStyle}
+                        onChangeText={(val) => setAddress(val)}
+                        selectionColor='#88AED0'
+                        cursorColor='#88AED0'
+                        underlineColor='rgba(255, 255, 255, 0)'
+                        activeUnderlineColor='rgba(255, 255, 255, 0)'
+                        outlineColor='#88AED0'
+                        activeOutlineColor='#88AED0'
+                        textColor='#1b1b1b'
+                        height='90'
+                    />
+                </View>
 
-                </TouchableHighlight>
+                <View style={styles.infoBox}>
+                    <TextInput
+                        right={<TextInput.Icon icon="pencil" />}
+                        placeholder={(postalCode !== null && postalCode !== '') ? postalCode : (userData && userData.postalCode) || ''}
+                        placeholderTextColor='#A4A6A8'
+                        mode={'flat'}
+                        style={styles.InputStyle}
+                        onChangeText={(val) => setPostalCode(val)}
+                        selectionColor='#88AED0'
+                        cursorColor='#88AED0'
+                        underlineColor='rgba(255, 255, 255, 0)'
+                        activeUnderlineColor='rgba(255, 255, 255, 0)'
+                        outlineColor='#88AED0'
+                        activeOutlineColor='#88AED0'
+                        textColor='#1b1b1b'
+                        height='90'
+                    />
+                </View>
+
+
+
+                <TouchableOpacity style={styles.SaveButton}
+                    activeOpacity={0.85}
+                    onPress={handleSave}
+                >
+                    <Text style={styles.ButtonLabel}> บันทึกข้อมูล </Text>
+
+
+                </TouchableOpacity>
 
 
 
@@ -142,22 +223,43 @@ const styles = StyleSheet.create({
         fontFamily: 'Prompt-Bold',
         fontSize: 18,
     },
-    Button: {
+    infoBox: {
         flexDirection: "row",
         justifyContent: 'space-between',
-        paddingVertical: 20,
-        paddingLeft: 20,
-        paddingRight: 20,
+        paddingVertical: 10,
+        paddingLeft: 10,
+        paddingRight: 10,
         marginHorizontal: 20,
+        marginBottom: 15,
         borderRadius: 15,
         alignItems: 'center',
         backgroundColor: '#f2f2f2',
     },
     ButtonLabel: {
-        fontFamily: 'Prompt-Regular',
+        fontFamily: 'Prompt-Bold',
         fontSize: 15,
-        color: '#757575',
-    }
+        color: '#454545',
+    },
+    SaveButton: {
+        flexDirection: "row",
+        justifyContent: 'center',
+        paddingVertical: 20,
+        paddingLeft: 20,
+        paddingRight: 20,
+        marginHorizontal: 20,
+        marginBottom: 15,
+        borderRadius: 15,
+        alignItems: 'center',
+        backgroundColor: "#C3E3FE",
+    },
+    InputStyle: {
+        fontFamily: 'Prompt-Regular',
+        backgroundColor: '#f2f2f2',
+        borderRadius: 15,
+        margin: 4,
+        width: '100%',
+    },
+
 });
 
 
