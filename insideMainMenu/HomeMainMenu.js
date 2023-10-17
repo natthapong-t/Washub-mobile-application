@@ -151,7 +151,7 @@ const HomeMainMenu = ({ navigation, route, phoneNumber }) => {
                         />
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.button} onPress={() => console.log('recent')} activeOpacity={0.85}>
+                    <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Recent', { phoneNumber })} activeOpacity={0.85}>
                         <Text style={styles.text}>คำสั่งซื้อ</Text>
                         <Image
                             style={styles.tinyLogo}

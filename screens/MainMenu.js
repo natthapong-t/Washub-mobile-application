@@ -104,19 +104,32 @@ const MainMenu = ({ navigation, route }) => {
                 >
                     {() => <HomeMainMenuScreen phoneNumber={phoneNumber} navigation={navigation}/>}
                 </Tab.Screen>
-                <Tab.Screen name={mapName} component={MapScreen} />
+
+
+                <Tab.Screen
+                    name={mapName}
+                    options={{ headerShown: false }}
+                >
+                    {() => <MapScreen phoneNumber={phoneNumber} navigation={navigation}/>}
+                </Tab.Screen>
+
+
                 <Tab.Screen
                     name={recentName}
                     options={{ headerShown: false }}
                 >
                     {() => <RecentScreen phoneNumber={phoneNumber} navigation={navigation}/>}
                 </Tab.Screen>
+
+
                 <Tab.Screen
                     name={otherName}
                     options={{ headerShown: false }}
                 >
                     {() => <OtherScreen phoneNumber={phoneNumber} navigation={navigation}/>}
                 </Tab.Screen>
+
+
             </Tab.Navigator>
 
 

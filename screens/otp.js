@@ -114,7 +114,7 @@ const OTPScreen = ({ navigation, route }) => {
                         <TouchableOpacity
                             style={[
                                 StyleSheet.absoluteFill,
-                                { backgroundColor: 0xffffffee, justifyContent: 'center' },
+                                { justifyContent: 'center' },
                             ]}
                             onPress={() => showMessage(undefined)}>
                             <Text

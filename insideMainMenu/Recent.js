@@ -118,7 +118,7 @@ const Recent = ({ navigation, phoneNumber }) => {
                                     size={15}
                                     marginRight={5}
                                 />
-                                <Text style={styles.HistoryLabel}>วัน เดือน ปี, 04:20</Text>
+                                <Text style={styles.HistoryLabel}>15 ก.พ. 2566, 04:20</Text>
                             </View>
                             <View style={styles.insideHistoryLabelContainer}>
                                 <Icon
