@@ -60,8 +60,16 @@ const MainMenu = ({ navigation, route }) => {
     const phoneNumber = route.params.phoneNumber;
     //const auth = route.params.auth;
 
-
-
+    // Branch data
+    const branches = [
+        { img: require('../assets/branch-logo.png'), title: 'ร้านซักผ้า สาขา U-PLAZA ม.ขอนแก่น' },
+        { img: require('../assets/branch-logo.png'), title: 'Otteri สาขา ปตท. ม.ขอนแก่น' },
+        { img: require('../assets/branch-logo.png'), title: 'Otteri สาขา ประตูเขียว ม.ขอนแก่น' },
+        { img: require('../assets/branch-logo.png'), title: 'Otteri สาขา โคลัมโบ ขอนแก่น' },
+        { img: require('../assets/branch-logo.png'), title: 'Cleanpro Express KKU' },
+        { img: require('../assets/branch-logo.png'), title: 'นกเครื่องซักผ้าหยอดเหรียญ สาขาหลังม.ขอนแก่น' },
+    ];
+    
     return (
         <View style={styles.container}>
 
@@ -102,7 +110,7 @@ const MainMenu = ({ navigation, route }) => {
                     name={homeName}
                     options={{ headerShown: false }}
                 >
-                    {() => <HomeMainMenuScreen phoneNumber={phoneNumber} navigation={navigation}/>}
+                    {() => <HomeMainMenuScreen phoneNumber={phoneNumber} navigation={navigation} branchData={branches}/>}
                 </Tab.Screen>
 
 

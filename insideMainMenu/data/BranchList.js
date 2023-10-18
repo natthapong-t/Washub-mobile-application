@@ -31,6 +31,7 @@ export default class BranchList extends React.Component {
                         fontFamily: "Prompt-Bold",
                         fontSize: 13,
                         paddingHorizontal: 5,
+                        width: 250,
                     }}>{title}</Text>
 
                 </View>

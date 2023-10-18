@@ -39,10 +39,12 @@ import { initializeApp, getApp } from 'firebase/app';
 const screen = Dimensions.get('screen');
 
 
-const HomeMainMenu = ({ navigation, route, phoneNumber }) => {
+const HomeMainMenu = ({ navigation, route, phoneNumber, branchData }) => {
     const logo_text = require('../assets/logo_text.png');
     const [text, setText] = React.useState("");
     const [userData, setUserData] = useState(null);
+    const [searchText, setSearchText] = React.useState('');
+
 
     const fetchUserDataByPhoneNumber = async (phoneNumber) => {
         const db = getDatabase();
@@ -124,7 +126,7 @@ const HomeMainMenu = ({ navigation, route, phoneNumber }) => {
                             )}
                         </Text>
                     </TouchableOpacity>
-                    
+
 
                     {/* navigaton test in fav button*/}
                     <TouchableOpacity style={styles.FavButton} onPress={() => navigation.navigate('Favorite', { phoneNumber })} activeOpacity={0.85}>
@@ -171,7 +173,8 @@ const HomeMainMenu = ({ navigation, route, phoneNumber }) => {
                         placeholderStyle={styles.InputForm}
                         style={styles.InputForm}
                         labelStyle={styles.inputLabel}
-                        onChangeText={text => setText('')}
+                        onChangeText={text => setSearchText(text)}  // Update search text
+                        value={searchText}  // Bind the value to the state
                         selectionColor='#88AED0'
                         cursorColor='#88AED0'
                         underlineColor='rgba(255, 255, 255, 0)'
@@ -184,35 +187,14 @@ const HomeMainMenu = ({ navigation, route, phoneNumber }) => {
 
                 </View>
 
-                <ScrollView contentContainerStyle={styles.scrollStyle} overScrollMode="never" showsVerticalScrollIndicator={false} >
+                <ScrollView contentContainerStyle={styles.scrollStyle} overScrollMode="never" showsVerticalScrollIndicator={false}>
                     <View style={styles.branchContainer}>
-                        <BranchList
-                            img={require('.././assets/branch-logo.png')}
-                            title="ร้านซักผ้า 1"
-                        />
-
-                        <BranchList
-                            img={require('.././assets/branch-logo.png')}
-                            title="ร้านซักผ้า 2"
-                        />
-
-                        <BranchList
-                            img={require('.././assets/branch-logo.png')}
-                            title="ร้านซักผ้า 3"
-                        />
-
-                        <BranchList
-                            img={require('.././assets/branch-logo.png')}
-                            title="ร้านซักผ้า 4"
-                        />
-
-                        <BranchList
-                            img={require('.././assets/branch-logo.png')}
-                            title="ร้านซักผ้า 5"
-                        />
-
+                        {branchData
+                            .filter(branch => branch.title.includes(searchText)) // Filter branches based on search text
+                            .map((branch, index) => (
+                                <BranchList key={index} img={branch.img} title={branch.title} />
+                            ))}
                     </View>
-
                 </ScrollView>
 
 

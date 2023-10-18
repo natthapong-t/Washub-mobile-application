@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { StatusBar } from 'expo-status-bar';
-
+import { AppLoading } from 'expo';
 import {
   StyleSheet, Text, View,
   TouchableOpacity, SafeAreaView, Platform,
-  Image, AppRegistry, ImageBackground
+  Image, AppRegistry, ImageBackground, LogBox 
 } from 'react-native';
 
 import {
@@ -21,6 +21,11 @@ import bgImg from '../assets/bg.png'
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+//ignore warning
+LogBox.ignoreLogs(['No native ExpoFirebaseCore module found']);
+LogBox.ignoreLogs(['You are initializing Firebase Auth for React Native without providing AsyncStorage. Auth state will default to memory persistence and will not persist between sessions.']);
+LogBox.ignoreLogs([' Non-serializable values were found in the navigation state. Check:']);
 
 const fontConfig = {
   customVariant: {
@@ -184,13 +189,13 @@ const styles = StyleSheet.create({
     height: 50,
     verticalAlign: 'middle',
     color: '#88AED0',
-    //fontFamily: 'Prompt-Bold', //Prompt-Regular Prompt-Bold
+    fontFamily: 'Prompt-Bold', //Prompt-Regular Prompt-Bold
   },
   LoginButtonLabel: {
     height: 50,
     verticalAlign: 'middle',
     color: '#fff',
-    //fontFamily: 'Prompt-Bold', //Prompt-Regular Prompt-Bold
+    fontFamily: 'Prompt-Bold', //Prompt-Regular Prompt-Bold
   },
   inputLabel: {
     color: '#88AED0',

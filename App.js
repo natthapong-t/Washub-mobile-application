@@ -3,6 +3,8 @@ import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator, CardStyleInterpolators } from '@react-navigation/native-stack';
 
+import { AppLoading } from 'expo';
+
 import LoginScreen from './screens/Login'
 import RegisterScreen from './screens/Register'
 import HomeScreen from './screens/Home'
@@ -51,11 +53,16 @@ const app = initializeApp(firebaseConfig);
 
 const MyStack = () => {
 
-  const [fontsLoaded] = useFonts({
+  let [fontsLoaded] = useFonts({
     'Prompt-Light': require('./assets/fonts/Prompt-Light.ttf'),
     'Prompt-Regular': require('./assets/fonts/Prompt-Regular.ttf'),
     'Prompt-Bold': require('./assets/fonts/Prompt-Bold.ttf'),
   });
+
+  if (!fontsLoaded) {
+    return null; // Return a loading indicator or an empty view
+  }
+
 
 
   return (

@@ -33,11 +33,19 @@ import BranchList from '../insideMainMenu/data/BranchList'
 
 const screen = Dimensions.get('screen');
 
+const favBranches = [
+    { img: require('../assets/branch-logo.png'), title: 'ร้านโปรด 1' },
+    { img: require('../assets/branch-logo.png'), title: 'ร้านโปรด 2' },
+    { img: require('../assets/branch-logo.png'), title: 'ร้านโปรด 3' },
+
+];
+
+
 const Favorite = ({ navigation, route }) => {
     const [username, setUsername] = useState('');  // Updated to use state
     const { phoneNumber } = route.params;
     const [userData, setUserData] = useState(null);
-    
+
 
     const fetchUserDataByPhoneNumber = async (phoneNumber) => {
         const db = getDatabase();
@@ -102,20 +110,11 @@ const Favorite = ({ navigation, route }) => {
 
                 <ScrollView contentContainerStyle={styles.scrollStyle} overScrollMode="never" showsVerticalScrollIndicator={false} >
                     <View style={styles.branchContainer}>
-                        <BranchList 
-                            img={require('.././assets/branch-logo.png')}
-                            title="ร้านซักผ้า 1"
-                        />
-
-                        <BranchList
-                            img={require('.././assets/branch-logo.png')}
-                            title="ร้านซักผ้า 2"
-                        />
-
-                        
-
+                        {/* Render the branch list using BranchList component */}
+                        {favBranches.map((branch, index) => (
+                            <BranchList key={index} img={branch.img} title={branch.title} />
+                        ))}
                     </View>
-
                 </ScrollView>
 
 
