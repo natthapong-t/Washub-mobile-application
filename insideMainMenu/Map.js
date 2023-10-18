@@ -14,7 +14,7 @@ import Constants from 'expo-constants';
 import {
     Button, TextInput, Avatar,
     Provider as PaperProvider, DefaultTheme,
-    configureFonts, MD2LightTheme
+    configureFonts, MD2LightTheme, shadow
 } from 'react-native-paper';
 
 // import { name as appName } from './app.json';
@@ -31,19 +31,35 @@ const Map = ({ navigation }) => {
 
     const markers = [
         {
-            title: 'Marker 1',
-            description: 'Description for Marker 1',
+            title: 'Otteri สาขา U-PLAZA',
+            description: 'Otteri สาขา U-PLAZA ม.ขอนแก่น',
             coordinate: {
-                latitude: 37.78825,
-                longitude: -122.4324,
+                latitude: 16.480535597954024,
+                longitude: 102.81819371368468,
             },
         },
         {
-            title: 'Marker 2',
-            description: 'Description for Marker 2',
+            title: 'Otteri ปตท',
+            description: 'Otteri wash&dry ปตท. มหาวิทยาลัยขอนแก่น',
             coordinate: {
-                latitude: 37.7,
-                longitude: -122.3,
+                latitude: 16.479041982726912,
+                longitude: 102.8141559751433,
+            },
+        },
+        {
+            title: 'Otteri ประตูเขียว',
+            description: 'Otteri Wash & Dry สาขาประตูเขียว',
+            coordinate: {
+                latitude: 16.484018999864833, 
+                longitude: 102.8108470379454,
+            },
+        },
+        {
+            title: 'Otteri โคลัมโบ',
+            description: 'Otteri wash & Dry สาขา โคลัมโบ มข.',
+            coordinate: {
+                latitude: 16.4802736060914, 
+                longitude: 102.80411607394527,
             },
         },
         // Add more markers as needed
@@ -61,18 +77,21 @@ const Map = ({ navigation }) => {
                 <MapView
                     style={{ flex: 1 }}
                     initialRegion={{
-                        latitude: 37.78825,
-                        longitude: -122.4324,
-                        latitudeDelta: 0.0922,
-                        longitudeDelta: 0.0421,
+                        latitude: 16.480535597954024,
+                        longitude: 102.81819371368468,
+                        latitudeDelta: 0.005,
+                        longitudeDelta: 0.005,
                     }}
                 >
                     {markers.map((marker, index) => (
                         <Marker
+                            fontSize = '15'
+                            pinColor='#88AED0'
                             key={index}
                             coordinate={marker.coordinate}
                             title={marker.title}
                             description={marker.description}
+                            image={require('../assets/custom_marker.png')}
                         />
                     ))}
                 </MapView>
