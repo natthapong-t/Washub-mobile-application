@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import FontAwesome, { SolidIcons, RegularIcons, BrandIcons } from 'react-native-fontawesome';
 
 import {
     StyleSheet, Text, View,
-    TouchableOpacity, SafeAreaView,
+    TouchableOpacity, SafeAreaView, Alert,
     Image, AppRegistry, ImageBackground, Pressable
 } from 'react-native';
 
@@ -27,8 +27,12 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import MapView, { Marker } from 'react-native-maps';
 
+import { Icon } from '@rneui/themed';
+
 const Map = ({ navigation }) => {
 
+    const mapRef = useRef(null);
+    const [searchQuery, setSearchQuery] = useState('');
     const markers = [
         {
             title: 'Otteri สาขา U-PLAZA',
@@ -50,7 +54,7 @@ const Map = ({ navigation }) => {
             title: 'Otteri ประตูเขียว',
             description: 'Otteri Wash & Dry สาขาประตูเขียว',
             coordinate: {
-                latitude: 16.484018999864833, 
+                latitude: 16.484018999864833,
                 longitude: 102.8108470379454,
             },
         },
@@ -58,12 +62,32 @@ const Map = ({ navigation }) => {
             title: 'Otteri โคลัมโบ',
             description: 'Otteri wash & Dry สาขา โคลัมโบ มข.',
             coordinate: {
-                latitude: 16.4802736060914, 
+                latitude: 16.4802736060914,
                 longitude: 102.80411607394527,
             },
         },
         // Add more markers as needed
     ];
+
+    const handleSearch = () => {
+        const lowercaseQuery = searchQuery.toLowerCase();
+
+        const markerToFocus = markers.find(
+            (marker) => marker.title.toLowerCase().includes(lowercaseQuery)
+        );
+
+        if (markerToFocus && mapRef.current) {  // Ensure mapRef.current is not null
+            // Reposition the map to the found marker
+            mapRef.current.animateToRegion({
+                ...markerToFocus.coordinate,
+                latitudeDelta: 0.005,
+                longitudeDelta: 0.005,
+            });
+        } else {
+            // Handle not found
+            Alert.alert('Marker Not Found', 'No marker found with that name.');
+        }
+    };
 
     return (
 
@@ -73,6 +97,32 @@ const Map = ({ navigation }) => {
             <View style={styles.View}>
                 <View style={styles.MenuHeader}>
                     <Text style={styles.headerText}>แผนที่</Text>
+                </View>
+                <View
+                    style={styles.searchView}>
+                    <TextInput
+                        placeholderTextColor="#A4A6A8"
+                        mode="flat"
+                        placeholder="ค้นหาชื่อร้าน"
+                        placeholderStyle={styles.InputForm}
+                        style={styles.InputForm}
+                        labelStyle={styles.inputLabel}
+                        selectionColor="#88AED0"
+                        cursorColor="#88AED0"
+                        underlineColor="rgba(255, 255, 255, 0)"
+                        activeUnderlineColor="rgba(255, 255, 255, 0)"
+                        outlineColor="#88AED0"
+                        activeOutlineColor="#88AED0"
+                        textColor="#1b1b1b"
+                        height={90}
+                        onChangeText={(query) => setSearchQuery(query)}
+                        value={searchQuery}
+                        onSubmitEditing={handleSearch} // Trigger search on submit
+                    />
+                    <TouchableOpacity onPress={handleSearch} style={styles.searchButton}>
+                        <Icon name='search' color='#A4A6A8' type='ionicon' size={24} />
+                    </TouchableOpacity>
+
                 </View>
                 <MapView
                     style={{ flex: 1 }}
@@ -85,7 +135,7 @@ const Map = ({ navigation }) => {
                 >
                     {markers.map((marker, index) => (
                         <Marker
-                            fontSize = '15'
+                            fontSize='15'
                             pinColor='#88AED0'
                             key={index}
                             coordinate={marker.coordinate}
@@ -166,6 +216,37 @@ const styles = StyleSheet.create({
     insideHistoryLabelContainer: {
         flexDirection: 'row',
         alignItems: 'center',
+    },
+    inputLabel: {
+        fontFamily: 'Prompt-Regular',
+        color: '#88AED0',
+        height: 50
+
+    },
+    InputForm: {
+        fontFamily: 'Prompt-Regular',
+        backgroundColor: '#fff',
+        borderRadius: 15,
+        width: 330,
+    },
+    searchView: {
+        backgroundColor: "#fff",
+        paddingVertical: 10,
+        paddingHorizontal: 0,
+        marginHorizontal: 20,
+        borderRadius: 15,
+        flexDirection: "row",
+        alignItems: "center",
+        width: 375,
+        elevation: 3,
+        shadowColor: '#1b1b1b',
+        position: 'absolute',
+        top: 90,
+        left: -10,
+        zIndex: 1,
+    },
+    searchButton: {
+        backgroundColor: '#fff',
     }
 
 });

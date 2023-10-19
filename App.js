@@ -14,7 +14,7 @@ import OtherScreen from './insideMainMenu/Other'
 import MyAddressScreen from './insideMainMenu/insideOther/MyAddress'
 import MyProfileScreen from './insideMainMenu/insideOther/MyProfile'
 import FavoriteScreen from './screens/Favorite'
-
+import SelectedBranchScreen from './insideMainMenu/insideHomeMainMenu/SelectedBranch'
 
 
 
@@ -216,6 +216,23 @@ const MyStack = () => {
           }}
         />
 
+        <Stack.Screen
+          name="SelectedBranch"
+          component={SelectedBranchScreen}
+          options={{
+            headerShown: false,
+            title: '',
+            headerStyle: {
+              backgroundColor: '#C3E3FE'
+            },
+            headerTintColor: '#fff',
+            headerTitleAlign: 'center',
+            headerTitleStyle: {
+
+            }
+
+          }}
+        />
 
 
 

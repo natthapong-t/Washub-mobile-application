@@ -24,8 +24,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 //ignore warning
 LogBox.ignoreLogs(['No native ExpoFirebaseCore module found']);
-LogBox.ignoreLogs(['You are initializing Firebase Auth for React Native without providing AsyncStorage. Auth state will default to memory persistence and will not persist between sessions.']);
-LogBox.ignoreLogs([' Non-serializable values were found in the navigation state. Check:']);
+LogBox.ignoreLogs(['You are initializing Firebase Auth for React Native without providing AsyncStorage. Auth state will default to memory persistence and will not']);
+LogBox.ignoreLogs(['Non-serializable values were found in the navigation state. Check:']);
 
 const fontConfig = {
   customVariant: {

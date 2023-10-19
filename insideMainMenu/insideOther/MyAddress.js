@@ -156,6 +156,8 @@ const MyAddress = ({ navigation, route }) => {
                         activeOutlineColor='#88AED0'
                         textColor='#1b1b1b'
                         height='90'
+                        numberOfLines={1}  // Set the number of lines to 1
+                        ellipsizeMode="tail"
                     />
                 </View>
 

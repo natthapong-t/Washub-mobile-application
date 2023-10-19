@@ -118,7 +118,7 @@ const HomeMainMenu = ({ navigation, route, phoneNumber, branchData }) => {
                         onPress={() => navigation.navigate('MyAddress', { phoneNumber }, { navigation })}
                     >
                         <Icon name='location-sharp' color='#78A2CC' type='ionicon' size={30} />
-                        <Text style={{ fontFamily: 'Prompt-Regular', color: '#757575', fontSize: 14 }}>
+                        <Text style={{ fontFamily: 'Prompt-Regular', color: '#757575', fontSize: 14 }} numberOfLines={1} ellipsizeMode='tail'>
                             {userData ? (
                                 <Text>{truncateAddress(userData.address, 15)}</Text> // Adjust the maxLength as needed
                             ) : (
@@ -128,8 +128,8 @@ const HomeMainMenu = ({ navigation, route, phoneNumber, branchData }) => {
                     </TouchableOpacity>
 
 
-                    {/* navigaton test in fav button*/}
-                    <TouchableOpacity style={styles.FavButton} onPress={() => navigation.navigate('Favorite', { phoneNumber })} activeOpacity={0.85}>
+                    {/* navigaton test in fav button* //onPress={() => navigation.navigate('Favorite', { phoneNumber })} activeOpacity={0.85}>\*/}
+                    <TouchableOpacity style={styles.FavButton} onPress={() => navigation.navigate('SelectedBranch')} activeOpacity={0.85}>
                         <Icon
                             name='heart'
                             color='#FF5656'
@@ -318,6 +318,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#D8EDFF',
         height: 50,
+        width: 160,
     },
 
 

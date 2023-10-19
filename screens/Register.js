@@ -18,7 +18,7 @@ import bgImg from '../assets/bg.png'
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { getDatabase, ref, set, push } from 'firebase/database';
+import { getDatabase, ref, set, push, get } from 'firebase/database';
 
 import { Icon } from '@rneui/themed';
 
@@ -34,7 +34,7 @@ const Register = ({ navigation }) => {
     const [address, setAddress] = useState('');
     const [postalCode, setPostalCode] = useState('');
 
-    const handleRegister = () => {
+    const handleRegister = async () => {
         const db = getDatabase();
         const usersRef = ref(db, 'users');
         const formattedPhoneNumber = phoneNumber.startsWith('0') ? `+66${phoneNumber.substring(1)}` : phoneNumber;
@@ -45,6 +45,15 @@ const Register = ({ navigation }) => {
             postalCode
         };
 
+        // Check if the phone number already exists
+        const snapshot = await get(ref(db, 'users'));
+        const existingUser = Object.values(snapshot.val() || {}).find(user => user.phoneNumber === formattedPhoneNumber);
+
+        if (existingUser) {
+            Alert.alert('หมายเลขดังกล่าวมีผู้ใช้งานแล้ว', 'เบอร์โทรศัพท์นี้มีผู้ใช้งานแล้ว กรุณาใช้หมายเลขอื่น.');
+            return;
+        }
+
         // Generate a new unique key for the user
         const newUserKey = push(usersRef).key;
 
@@ -52,12 +61,12 @@ const Register = ({ navigation }) => {
         set(ref(db, `users/${newUserKey}`), userData)
             .then(() => {
                 console.log('User registered and data stored in the database:', userData);
+                Alert.alert('ลงทะเบียนสำเร็จ', 'เข้าสู่ระบบได้เลย.');
             })
             .catch((error) => {
                 console.error('Error storing user data:', error);
+                Alert.alert('มีข้อผิดพลาดเกิดขึ้น โปรดลองอีกครั้ง');
             });
-
-        Alert.alert('ลงทะเบียนสำเร็จ', 'เข้าสู่ระบบได้เลย.');
     };
 
 
